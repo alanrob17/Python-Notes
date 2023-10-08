@@ -43,3 +43,9 @@ When I click in the Command Mode area (to the left of a cell) I can create a new
 ```
     Ctrl-Shift-Enter
 ```
+
+To open a cell below the current cell.
+
+```bash
+    Alt-Enter
+```
