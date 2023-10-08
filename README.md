@@ -1,3 +1,3 @@
 # Python Notes
 
-This is where keep my notes on using Python.
+This is where I keep my notes on using Python.
