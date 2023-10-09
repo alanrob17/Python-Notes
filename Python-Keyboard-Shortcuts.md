@@ -1,12 +1,12 @@
 # Python keyboard shortcuts
 
-To open a Python terminal in a console window.
+To open a Python shell in a console window.
 
 ```bash
     python
 ```
 
-To close a Python terminal.
+To close a Python shell.
 
 ```bash
     quit()

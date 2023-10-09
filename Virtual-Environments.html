@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Virtual-Environments.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="virtual-environments">Virtual environments</h1>
+<p>It is of vital importance that you never install libraries directly at the system level. Linux, for example, relies on Python for many different tasks and operations, and if you fiddle with the system installation of Python, you risk compromising the integrity of the whole system. So, take this as a rule, such as brushing your teeth before going to bed: always create a virtual environment when you start a new project.</p>
+<p>When it comes to creating a virtual environment on your system, there are a few different methods to carry this out. As of Python 3.5, the suggested way to create a virtual environment is to use the <code>venv</code> module.</p>
+<h2 id="your-first-virtual-environment">Your first virtual environment</h2>
+<p>It is very easy to create a virtual environment, but according to how your system is configured and which Python version you want the virtual environment to run, you need to run the command properly. Another thing you will need to do, when you want to work with it, is to activate it. Activating virtual environments basically produces some path juggling behind the scenes so that when you call the Python interpreter from that shell, you're actually calling the active virtual environment one, instead of the system one.</p>
+<p>We will.</p>
+<ol>
+<li>Open a terminal and change into the folder (directory) we use as root for our projects (our folder is <code>Python</code>). We are going to create a new folder called <code>myProject</code> and change into it.</li>
+<li>Create a virtual environment called <code>lpp3ed</code>.</li>
+<li>After creating the virtual environment, we will activate it. The methods are slightly different between Linux, macOS, and Windows.</li>
+<li>Then, we will make sure that we are running the desired Python version (3.11.X) by running the Python interactive shell.</li>
+<li>Deactivate the virtual environment.</li>
+</ol>
+<p>These steps are all you need to start a project.</p>
+<pre class="hljs"><code><div>    C:\Temp\Python&gt;md myProject
+    C:\Temp\Python&gt;<span class="hljs-built_in">cd</span> myProject
+    <span class="hljs-built_in">where</span> python
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>C:\Users\username\AppData\Local\Programs\Python\Python39\python.exe<br>
+C:\Users\username\AppData\Local\Microsoft\WindowsApps\python.exe</p>
+</blockquote>
+<pre class="hljs"><code><div>    python -m venv lpp3ed
+</div></code></pre>
+<p>if you do an <code>ls</code> you will see a folder.</p>
+<blockquote>
+<p>lpp3ed</p>
+</blockquote>
+<p>To activate your virtual environment.</p>
+<pre class="hljs"><code><div>    lpp3ed\Scripts\activate
+</div></code></pre>
+<p>This activates the virtual environment, now check where Python is installed again.</p>
+<pre class="hljs"><code><div>    <span class="hljs-built_in">where</span> python
+</div></code></pre>
+<p>You should get.</p>
+<blockquote>
+<p>C:\Users\alanr\AppData\Local\Programs\Python\Python39\python.exe<br>
+C:\Users\alanr\AppData\Local\Microsoft\WindowsApps\python.exe</p>
+</blockquote>
+<p>Now you can run Python.</p>
+<pre class="hljs"><code><div>    (lpp3ed) C:\Temp\Python\myProject&gt;python
+</div></code></pre>
+<p>this should produce.</p>
+<blockquote>
+<p>Python 3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)] on win32<br>
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.<br>
+&gt;&gt;&gt;</p>
+</blockquote>
+<p>You are now in a working environment.</p>
+<p>To close down a working environment.</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt;quit()
+</div></code></pre>
+<p>Then.</p>
+<pre class="hljs"><code><div>    (lpp3ed) C:\Temp\Python\myProject&gt;deactivate
+</div></code></pre>
+<p>you should then see the prompt.</p>
+<blockquote>
+<p>C:\Temp\Python\myProject&gt;</p>
+</blockquote>
+<p>The process for Linux is slightly different to this.</p>
+<p><strong>Note:</strong> This only becomes important to do when you are installing third-party libraries. When we are learning the basics of Python virtual environments won't be needed.</p>
+<h2 id="installing-third-party-libraries">Installing third-party libraries</h2>
+<p><strong>Note:</strong> In order to install third-party libraries, we need to use the Python Package Installer, known as pip. Chances are that it is already available to you within your virtual environment, but if not, you can learn all about it on its documentation page: <a href="https://pip.pypa.io">https://pip.pypa.io</a>.</p>
+<p>The following example shows how to create a virtual environment and install a couple of third-party libraries taken from a requirements file.</p>
+<pre class="hljs"><code><div>    md my-project
+</div></code></pre>
+<p>cd into your new project and run.</p>
+<pre class="hljs"><code><div>    python3.9 -m venv lpp3ed
+</div></code></pre>
+<p>Activate your virtual environment.</p>
+<pre class="hljs"><code><div>    lpp3ed\Scripts\activate
+</div></code></pre>
+<p><strong>Important:</strong> you should see the following prompt that shows you are using a virtual environment.</p>
+<blockquote>
+<p>(lpp3ed) C:\Temp\Python\my-project&gt;</p>
+</blockquote>
+<p>We have a <code>requirements.txt</code> file that contains the following.</p>
+<blockquote>
+<p>Django==3.1.7<br>
+requests==2.25.1</p>
+</blockquote>
+<p>The following instruction shows how to use <code>pip</code> to install requirements from a file.</p>
+<pre class="hljs"><code><div>    pip install -r requirements.txt
+</div></code></pre>
+<p>Once you have installed the third-party libraries you should be able to see what you have installed in the <code>lpp3ed\libraries</code> folder.</p>
+<p>To finish working in your virtual environment.</p>
+<pre class="hljs"><code><div>    (lpp3ed) C:\Temp\Python\my-project&gt;deactivate
+</div></code></pre>
+
+</body>
+</html>

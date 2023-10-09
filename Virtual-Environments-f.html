@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Creating a virtual environment</title>
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="assets/css/starter-template.css" rel="stylesheet">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+<style type="text/css">
+html {
+	font-size: 90.0%;
+}
+
+h2 {
+	margin-top: 60px;
+}
+
+h4, h3 {
+	padding-top: 40px!;		
+}
+
+p {
+	font-size: 1.2em;
+}
+h4 {
+	font-size: 1.4em;
+}
+
+img, pre.prettyprint {
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+    color:#007bff;
+
+}
+blockquote {
+    border-left: 4px solid #999;
+    padding-left: 1rem;
+    page-break-inside: avoid;
+}
+</style>
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Learn Python Programming</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Creating a virtual environment <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <div class="starter-template">
+
+
+<h1 id="virtual-environments">Virtual environments</h1>
+<p>It is of vital importance that you never install libraries directly at the system level. Linux, for example, relies on Python for many different tasks and operations, and if you fiddle with the system installation of Python, you risk compromising the integrity of the whole system. So, take this as a rule, such as brushing your teeth before going to bed: always create a virtual environment when you start a new project.</p>
+<p>When it comes to creating a virtual environment on your system, there are a few different methods to carry this out. As of Python 3.5, the suggested way to create a virtual environment is to use the <code>venv</code> module.</p>
+<h2 id="your-first-virtual-environment">Your first virtual environment</h2>
+<p>It is very easy to create a virtual environment, but according to how your system is configured and which Python version you want the virtual environment to run, you need to run the command properly. Another thing you will need to do, when you want to work with it, is to activate it. Activating virtual environments basically produces some path juggling behind the scenes so that when you call the Python interpreter from that shell, you're actually calling the active virtual environment one, instead of the system one.</p>
+<p>We will.</p>
+<ol>
+<li>Open a terminal and change into the folder (directory) we use as root for our projects (our folder is <code>Python</code>). We are going to create a new folder called <code>myProject</code> and change into it.</li>
+<li>Create a virtual environment called <code>lpp3ed</code>.</li>
+<li>After creating the virtual environment, we will activate it. The methods are slightly different between Linux, macOS, and Windows.</li>
+<li>Then, we will make sure that we are running the desired Python version (3.11.X) by running the Python interactive shell.</li>
+<li>Deactivate the virtual environment.</li>
+</ol>
+<p>These steps are all you need to start a project.</p>
+<pre class="prettyprint"><code><div>    C:\Temp\Python&gt;md myProject
+    C:\Temp\Python&gt;<span class="hljs-built_in">cd</span> myProject
+    <span class="hljs-built_in">where</span> python
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>C:\Users\username\AppData\Local\Programs\Python\Python39\python.exe<br>
+C:\Users\username\AppData\Local\Microsoft\WindowsApps\python.exe</p>
+</blockquote>
+<pre class="prettyprint"><code><div>    python -m venv lpp3ed
+</div></code></pre>
+<p>if you do an <code>ls</code> you will see a folder.</p>
+<blockquote>
+<p>lpp3ed</p>
+</blockquote>
+<p>To activate your virtual environment.</p>
+<pre class="prettyprint"><code><div>    lpp3ed\Scripts\activate
+</div></code></pre>
+<p>This activates the virtual environment, now check where Python is installed again.</p>
+<pre class="prettyprint"><code><div>    <span class="hljs-built_in">where</span> python
+</div></code></pre>
+<p>You should get.</p>
+<blockquote>
+<p>C:\Users\alanr\AppData\Local\Programs\Python\Python39\python.exe<br>
+C:\Users\alanr\AppData\Local\Microsoft\WindowsApps\python.exe</p>
+</blockquote>
+<p>Now you can run Python.</p>
+<pre class="prettyprint"><code><div>    (lpp3ed) C:\Temp\Python\myProject&gt;python
+</div></code></pre>
+<p>this should produce.</p>
+<blockquote>
+<p>Python 3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)] on win32<br>
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.<br>
+&gt;&gt;&gt;</p>
+</blockquote>
+<p>You are now in a working environment.</p>
+<p>To close down a working environment.</p>
+<pre class="prettyprint"><code><div>    &gt;&gt;&gt;quit()
+</div></code></pre>
+<p>Then.</p>
+<pre class="prettyprint"><code><div>    (lpp3ed) C:\Temp\Python\myProject&gt;deactivate
+</div></code></pre>
+<p>you should then see the prompt.</p>
+<blockquote>
+<p>C:\Temp\Python\myProject&gt;</p>
+</blockquote>
+<p>The process for Linux is slightly different to this.</p>
+<p><strong>Note:</strong> This only becomes important to do when you are installing third-party libraries. When we are learning the basics of Python virtual environments won't be needed.</p>
+<h2 id="installing-third-party-libraries">Installing third-party libraries</h2>
+<p><strong>Note:</strong> In order to install third-party libraries, we need to use the Python Package Installer, known as pip. Chances are that it is already available to you within your virtual environment, but if not, you can learn all about it on its documentation page: <a href="https://pip.pypa.io">https://pip.pypa.io</a>.</p>
+<p>The following example shows how to create a virtual environment and install a couple of third-party libraries taken from a requirements file.</p>
+<pre class="prettyprint"><code><div>    md my-project
+</div></code></pre>
+<p>cd into your new project and run.</p>
+<pre class="prettyprint"><code><div>    python3.9 -m venv lpp3ed
+</div></code></pre>
+<p>Activate your virtual environment.</p>
+<pre class="prettyprint"><code><div>    lpp3ed\Scripts\activate
+</div></code></pre>
+<p><strong>Important:</strong> you should see the following prompt that shows you are using a virtual environment.</p>
+<blockquote>
+<p>(lpp3ed) C:\Temp\Python\my-project&gt;</p>
+</blockquote>
+<p>We have a <code>requirements.txt</code> file that contains the following.</p>
+<blockquote>
+<p>Django==3.1.7<br>
+requests==2.25.1</p>
+</blockquote>
+<p>The following instruction shows how to use <code>pip</code> to install requirements from a file.</p>
+<pre class="prettyprint"><code><div>    pip install -r requirements.txt
+</div></code></pre>
+<p>Once you have installed the third-party libraries you should be able to see what you have installed in the <code>lpp3ed\libraries</code> folder.</p>
+<p>To finish working in your virtual environment.</p>
+<pre class="prettyprint"><code><div>    (lpp3ed) C:\Temp\Python\my-project&gt;deactivate
+</div></code></pre>
+
+
+
+</div><!-- starter-template -->
+</div><!-- /.container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"/>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+</body>
+</html>
