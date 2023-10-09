@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Learn-Python-Programming.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="how-to-run-a-python-program">How to run a Python program</h1>
+<p>There are a few different ways in which you can run a Python program.</p>
+<h2 id="running-python-scripts">Running Python scripts</h2>
+<p>Python can be used as a scripting language; in fact, it always proves itself very useful. Scripts are files (usually of small dimensions) that you normally execute to do something like a task. Many developers end up having their own arsenal of tools that they fire when they need to perform a task. For example, you can have scripts to parse data in a format and render it into another one; or you can use a script to work with files and folders; you can create or modify configuration files—technically, there is not much that cannot be done in a script.</p>
+<p>It is rather common to have scripts running at a precise time on a server. For example, if your website database needs cleaning every 24 hours (for example, the table that stores the user sessions, which expire pretty quickly but aren't cleaned automatically), you could set up a Cron job that fires your script at 3:00 A.M. every day.</p>
+<p>We have Python scripts to do all the menial tasks that would take us minutes or more to do manually, and at some point, we decided to automate.</p>
+<h2 id="running-the-python-interactive-shell">Running the Python interactive shell</h2>
+<p>Another way of running Python is by calling the interactive shell. This is something we already saw when we typed python on the command line of our console. So, open up a console, activate your virtual environment (which by now should be<br>
+second nature to you, right?), and type python. You will be presented with a few lines that should look something like this:</p>
+<pre class="hljs"><code><div>    username@MACHINENAME MINGW64 ~
+    $ python
+    Python 3.11.0 (main, Oct 24 2022, 18:26:48) [MSC v.1933 64 bit (AMD64)] on win32
+    Type <span class="hljs-string">"help"</span>, <span class="hljs-string">"copyright"</span>, <span class="hljs-string">"credits"</span> or <span class="hljs-string">"license"</span> <span class="hljs-keyword">for</span> more information.
+    &gt;&gt;&gt;
+</div></code></pre>
+<p>Run these commands.</p>
+<pre class="hljs"><code><div>&gt;&gt;&gt; 3 + 7
+10
+&gt;&gt;&gt; 10 / 4
+2.5
+&gt;&gt;&gt; 2 ** 1024
+179769313486231590772930519078902473361797697894230657273430081157732675805500963132708477322407536021120113879871393357658789768814416622492847430639474124377767893424865485276302219601246094119453082952085005768838150682342462881473913110540827237163350510684586298239947245938479716304835356329624224137216
+</div></code></pre>
+<p>The last operation is showing you something incredible. We raise 2 to the power of 1024, and Python handles this task with no trouble at all. Try to do it in Java, C++, or C#. It won't work, unless you use special libraries to handle such big numbers.</p>
+<p>When you use Django (a web framework), the interactive shell is coupled with it and allows you to work your way through the framework tools, to inspect the data in the database, and much more. You will find that the interactive shell soon becomes one of your dearest friends on this journey you are embarking on.</p>
+<p>You can open a Python command shell from</p>
+<blockquote>
+<p>C:\Python311\python.exe</p>
+</blockquote>
+<p>You can also use an IDLE (IDE) that you can execute from the Installed  Apps menu on Windows.</p>
+<p><img src="assets/images/idle.jpg" alt="IDLE" title="IDLE"></p>
+<p>You can open a Python file and run it using <strong>F5</strong>.</p>
+<p><img src="assets/images/run-script.jpg" alt="Run Python script" title="Run Python script"></p>
+<h2 id="running-python-as-a-service">Running Python as a service</h2>
+<p>Apart from being run as a script, and within the boundaries of a shell, Python can be coded and run as an application. We'll see many examples throughout this book of this mode. We will understand more about it in a moment, when we talk about how Python code is organized and run.</p>
+<h2 id="running-python-as-a-gui-application">Running Python as a GUI application</h2>
+<p>Python can also be run as a Graphical User Interface (GUI). There are several frameworks available, some of which are cross-platform, and some others that are platform-specific. Examples of a GUI application created using <strong>Tkinter</strong>, which is an object-oriented layer that lives on top of Tk (Tkinter means Tk interface). This comes bundled with Python.</p>
+<h2 id="how-is-python-code-organized">How is Python code organized?</h2>
+<p>Let's talk a little bit about how Python code is organized. In this section, we will start to enter the proverbial rabbit hole and introduce more technical names and concepts. Starting with the basics, how is Python code organized? Of course, you write your code into files. When you save a file with the extension .py, that file is said to be a Python module.</p>
+<p>It would be impractical to save all the code that it is required for software to work within one single file. That solution works for scripts, which are usually not longer than a few hundred lines (and often they are shorter than that).</p>
+<p>A complete Python application can be made of hundreds of thousands of lines of code, so you will have to scatter it through different modules, which is better, but not nearly good enough. It turns out that even like this, it would still be impractical to work with the code. So, Python gives you another structure, called a package, which allows you to group modules together. A package is nothing more than a folder that must contain a special file, <code>__init__.py</code>. This does not need to hold any code, but its presence is required to tell Python that this is not just a typical folder—it is actually a<br>
+package.</p>
+<p>As always, an example will make all of this much clearer. We have created an example structure in our book project, and when we type in the console:</p>
+<pre class="hljs"><code><div>    tree
+</div></code></pre>
+<p>We will see.</p>
+<pre class="hljs"><code><div>    $ tree
+    .
+    |-- core.py
+    |-- run.py
+    `-- util
+        |-- __init__.py
+        |-- db.py
+        |-- math.py
+        `-- network.py
+    
+    1 directory, 6 files
+</div></code></pre>
+<p>You can see that within the root of this example, we have two modules, <code>core.py</code> and <code>run.py</code>, and one package, util. Within <code>core.py</code>, there may be the core logic of our application. On the other hand, within the <code>run.py</code> module, we can probably find the logic to start the application. Within the util package, we expect to find various utility tools, and in fact, we can guess that the modules there are named based on the types of tools they hold: db.py would hold tools to work with databases, math.py would, of course, hold mathematical tools (maybe our application deals with financial data), and <code>network.py</code> would probably hold tools to send/receive data on networks. As explained before, the <code>__init__.py</code> file is there just to tell Python that util is a package and not just a simple folder.</p>
+<h2 id="how-do-we-use-modules-and-packages">How do we use modules and packages?</h2>
+<p>Python is a wonderful language and provides you with all the tools you need to apply the coding best practices. For this particular example, we need to be able to reuse a piece of code. To do this effectively, we need to have a construct that will hold the code for us so that we can call that construct every time we need to repeat the logic inside it. That construct exists, and it's called a <strong>function</strong>.</p>
+<p>Python comes with a very extensive library. Now is a good time to define what a library is: a collection of functions and objects that provide functionalities to enrich the abilities of a language. For example, within Python's math library, a plethora of functions can be found, one of which is the factorial function, which calculates the factorial of a number.</p>
+<p>So, if you wanted to use this function in your code, all you would have to do is to <strong>import</strong> it and call it with the right input values. Don't worry too much if input values and the concept of calling are not clear right now; please just concentrate on the import part. We use a library by importing what we need from it, which will then be used specifically. In Python, to calculate 5!, we just need the following code:</p>
+<pre class="hljs"><code><div>    <span class="hljs-keyword">from</span> math <span class="hljs-keyword">import</span> factorial
+    result = factorial(<span class="hljs-number">5</span>)
+    print(result)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>120</p>
+</blockquote>
+<p>We are using a library module named <strong>math</strong> which has a function named <strong>factorial</strong>. This saves us having to write our own factorial function.</p>
+<h2 id="pythons-execution-model">Python's execution model</h2>
+<p>In this section, we would like to introduce you to some important concepts, such as scope, names, and namespaces. You can read all about Python's execution model in the official language reference (<a href="https://docs.python.org/3/reference/executionmodel.html">https://docs.python.org/3/reference/executionmodel.html</a>), of course, but we would argue that it is quite technical and abstract, so let us give you a less formal explanation first.</p>
+<h3 id="names-and-namespaces">Names and namespaces</h3>
+<p>Say you are looking for a book, so you go to the library and ask someone to obtain this. They tell you something like Second Floor, Section X, Row Three. So, you go up the stairs, look for Section X, and so on. It would be very different to enter a library where all the books are piled together in random order in one big room. No floors, no sections, no rows, no order. Fetching a book would be extremely hard.</p>
+<p>When we write code, we have the same issue: we have to try and organize it so that it will be easy for someone who has no prior knowledge about it to find what they are looking for. When software is structured correctly, it also promotes code reuse. Furthermore, disorganized software is more likely to contain scattered pieces of duplicated logic.</p>
+<p>As a first example, let us take a book. We refer to a book by its title; in Python lingo, that would be a name. Python names are the closest abstraction to what other languages call variables. Names basically refer to objects and are introduced by<br>
+name-binding operations. Let's see a quick example.</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; n = 3
+    &gt;&gt;&gt; address = <span class="hljs-string">"221b Baker Street, NW1 6XE, London"</span>
+    &gt;&gt;&gt; employee = {
+    ... <span class="hljs-string">'age'</span>: 45,
+    ... <span class="hljs-string">'role'</span>: <span class="hljs-string">'CTO'</span>,
+    ... <span class="hljs-string">'SSN'</span>: <span class="hljs-string">'AB1234567'</span>,
+    ... }
+    &gt;&gt;&gt; n
+    3
+    &gt;&gt;&gt; address
+    <span class="hljs-string">'221b Baker Street, NW1 6XE, London'</span>
+    &gt;&gt;&gt; employee
+    {<span class="hljs-string">'age'</span>: 45, <span class="hljs-string">'role'</span>: <span class="hljs-string">'CTO'</span>, <span class="hljs-string">'SSN'</span>: <span class="hljs-string">'AB1234567'</span>}
+    &gt;&gt;&gt;
+</div></code></pre>
+<p>Remember that each Python object has an <strong>identity</strong>, a <strong>type</strong>, and a <strong>value</strong>. We defined three objects in the preceding code; let's now examine their types and values:</p>
+<ul>
+<li>An integer number n (type: int, value: 3)</li>
+<li>A string address (type: str, value: Sherlock Holmes' address)</li>
+<li>A dictionary employee (type: dict, value: a dictionary object with three key/value pairs)</li>
+</ul>
+<p><strong>Note:</strong> Have you noticed that the prompt changed from &gt;&gt;&gt; to ... when we typed in the definition of employee? That's because the definition spans over multiple lines.</p>
+<p>So, what are <code>n</code>, <code>address</code>, and <code>employee</code>? They are <strong>names</strong>, and these can be used to retrieve data from within our code. They need to be kept somewhere so that whenever we need to retrieve those objects, we can use their names to fetch them. We need some space to hold them, hence: <strong>namespaces</strong>!</p>
+<p>A <strong>namespace</strong> is a mapping from names to objects. Examples are the set of built-in names (containing functions that are always accessible in any Python program), the global names in a module, and the local names in a function. Even the set of<br>
+attributes of an object can be considered a namespace. The beauty of namespaces is that they allow you to define and organize your names with clarity, without overlapping or interference. For example, the namespace associated with the book we were looking for in the library can be used to import the book itself, like this:</p>
+<blockquote>
+<p>from library.second_floor.section_x.row_three import book</p>
+</blockquote>
+<p>We start from the library <strong>namespace</strong>, and by means of the dot (.) operator, we walk into that namespace. Within this namespace, we look for second_floor, and again we walk into it with the . operator. We then walk into section_x, and finally, within the last namespace, row_three, we find the name we were looking for: <strong>book</strong>.</p>
+<p>Walking through a namespace will be clearer when dealing with real code examples. For now, just keep in mind that namespaces are places where names are associated with objects.</p>
+<p>There is another concept, closely related to that of a namespace, which we would like to mention briefly: <strong>scope</strong>.</p>
+<h2 id="scopes">Scopes</h2>
+<p>According to Python's documentation:</p>
+<blockquote>
+<p>&quot;A scope is a textual region of a Python program, where a namespace is directly accessible.&quot;</p>
+</blockquote>
+<p>Directly accessible means that, when looking for an unqualified reference to a name, Python tries to find it in the namespace.</p>
+<p>Scopes are determined statically, but actually, during runtime, they are used dynamically. This means that by inspecting the source code, you can tell what the scope of an object is. There are four different scopes that Python makes accessible<br>
+(not necessarily all of them are present at the same time, of course):</p>
+<ul>
+<li>The local scope, which is the innermost one and contains the local names.</li>
+<li>The enclosing scope; that is, the scope of any enclosing function. It contains non-local names and also non-global names.</li>
+<li>The global scope contains the global names.</li>
+<li>The built-in scope contains the built-in names. Python comes with a set of functions that you can use in an off-the-shelf fashion, such as print, all, abs, and so on. They live in the built-in scope.</li>
+</ul>
+<p>The rule is the following: when we refer to a name, Python starts looking for it in the current namespace. If the name is not found, Python continues the search in the enclosing scope, and this continues until the built-in scope is searched. If a name has still not been found after searching the built-in scope, then Python raises a NameError exception, which basically means that the name hasn't been defined.</p>
+<p>The order in which the namespaces are scanned when looking for a name is therefore local, enclosing, global, built-in (LEGB).<br>
+This is all very theoretical, so let's see an example. In order to demonstrate local and enclosing namespaces, we will have to define a few functions. Don't worry if you are not familiar with their syntax for the moment—that will come later</p>
+<p>Just remember that in the following code, when you see def, it means we are defining a function:</p>
+<pre class="hljs"><code><div>    <span class="hljs-comment"># scopes1.py</span>
+    <span class="hljs-comment"># Local versus Global</span>
+    <span class="hljs-comment"># we define a function, called local</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">local</span><span class="hljs-params">()</span>:</span>
+        m = <span class="hljs-number">7</span>
+        print(m)
+    
+    <span class="hljs-comment"># we define m within the global scope</span>
+    m = <span class="hljs-number">5</span>
+    
+    <span class="hljs-comment"># we call, or `execute` the function local</span>
+    local()
+    
+    print(m)
+</div></code></pre>
+<p>In the preceding example, we define the same name m, both in the global scope and in the local one (the one defined by the local function). When we execute this program with the following command (have you activated your virtual environment?):<br>
+Returns:</p>
+<blockquote>
+<p>$ python scopes1.py<br>
+7<br>
+5</p>
+</blockquote>
+<p>What happens is that the Python interpreter parses the file, top to bottom. First, it finds a couple of comment lines, which are skipped, then it parses the definition of the function local. When called, this function will do two things: it will set up a name to an object representing number <strong>7</strong> and will print it. The Python interpreter keeps going, and it finds another name binding. This time the binding happens in the global scope and the value is <strong>5</strong>. On the next line, there is a call to the function local. At this point, Python executes the function, so at this time, the binding m = <strong>7</strong> happens in the local scope and is printed. Finally, there is a call to the print function, which is executed and will now print <strong>5</strong>.</p>
+<p>One very important thing to note is that the part of the code that belongs to the definition of the local function is <strong>indented</strong> by four spaces on the right. Python, in fact, defines scopes by indenting the code. You walk into a scope by <strong>indenting</strong>, and walk out of it by <strong>unindenting</strong>. Some coders use two spaces, others three, but the suggested number of spaces to use is four. It's a good measure to maximize readability.</p>
+<p>What would happen if we removed that <strong>m = 7</strong> line? Remember the LEGB rule. Python would start looking for <strong>m</strong> in the local scope (function local), and, not finding it, it would go to the next enclosing scope. The next one, in this case, is the global one because there is no enclosing function wrapped around local. Therefore, we would see the number <strong>5</strong> printed twice on the console. Let's see what the code would look<br>
+like in this case:</p>
+<pre class="hljs"><code><div>    <span class="hljs-comment"># scopes2.py</span>
+    <span class="hljs-comment"># Local versus Global</span>
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">local</span><span class="hljs-params">()</span>:</span>
+        <span class="hljs-comment"># m doesn't belong to the scope defined by the local function</span>
+        <span class="hljs-comment"># so Python will keep looking into the next enclosing scope.</span>
+        <span class="hljs-comment"># m is finally found in the global scope</span>
+        print(m, <span class="hljs-string">"printing from the local scope"</span>)
+
+    m = <span class="hljs-number">5</span>
+
+    print(m, <span class="hljs-string">"printing from the global scope"</span>)
+
+    local()
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>5 printing from the global scope<br>
+5 printing from the local scope</p>
+</blockquote>
+
+</body>
+</html>
