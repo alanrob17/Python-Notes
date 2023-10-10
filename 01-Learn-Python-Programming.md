@@ -274,3 +274,59 @@ Returns:
 As you can see, the print instruction from the function local is referring to **m** as before. m is still not defined within the function itself, so Python starts walking scopes following the LEGB order. This time **m** is found in the *enclosing* scope.
 
 ## Objects and classes
+
+We have already seen that objects are Python's abstraction for data. In fact, everything in Python is an object: numbers, strings (data structures that hold text), containers, collections, even functions. You can think of them as if they were boxes with at least three features: an ID (which is unique), a type, and a value. But how do they come to life? How do we create them? How do we write our own custom objects? The answer lies in one simple word: ``classes``.
+
+Objects are, in fact, instances of classes. The beauty of Python is that classes are objects themselves, but let's not go down this road. It leads to one of the most advanced concepts of this language: ``metaclasses``. For now, the best way for you to get the difference between classes and objects is by means of an example.
+
+Let's see an example. We will write a class that defines a bike and create two bikes,
+one red and one blue.
+
+```python
+    # bike.py
+    # let's define the class Bike
+    class Bike:
+        def __init__(self, colour, frame_material):
+            self.colour = colour
+            self.frame_material = frame_material
+
+        def brake(self):
+            print("Braking!")
+
+    # let's create a couple of instances
+    red_bike = Bike("Red", "Carbon fiber")
+    blue_bike = Bike("Blue", "Steel")
+
+    # let's inspect the objects we have, instances of the Bike class.
+    print(red_bike.colour) 
+    print(red_bike.frame_material)
+    print(blue_bike.colour)
+    print(blue_bike.frame_material)
+
+    # let's brake!
+    red_bike.brake()
+```
+
+Returns:
+
+> Red       
+> Carbon fiber      
+> Blue      
+> Steel     
+> Braking!
+
+So many interesting things to notice here. First, the definition of a class happens with the class statement. Whatever code comes after the class statement, and is indented, is called the body of the class. In our case, the last line that belongs to the class definition is print("Braking!").
+
+After having defined the class, we are ready to create some instances. You can see that the class body hosts the definition of two methods. A method is basically (and simplistically) a function that belongs to a class.
+
+The first method, ``__init__``, is an initializer. It uses some Python magic to set up the objects with the values we pass when we create it.
+
+**Note:** every method that has leading and trailing double underscores, in Python, is called a magic method. Magic methods are used by Python for a multitude of different purposes, hence it's never a good idea to name a custom method using two leading and trailing underscores. This naming convention is best left to Python.
+
+The other method we defined, brake, is just an example of an additional method that we could call if we wanted to brake. It contains only a print statement.
+
+So, two bikes were created: one has a red color and carbon fiber frame, and the other one has a blue color and a steel frame. We pass those values upon creation; afterwards, we print out the color property and frame type of the red bike, and the frame type of the blue one just as an example. We also call the brake method of red_bike.
+
+One last thing to notice: remember how we said that the set of attributes of an object is considered to be a namespace? We hope it's clearer now what that meant. You see that by getting to the frame_type property through different namespaces (red_bike, blue_bike), we obtain different values. No overlapping, no confusion.
+
+The dot (**.**) operator is of course the means we use to walk into a namespace, in the case of objects as well.
