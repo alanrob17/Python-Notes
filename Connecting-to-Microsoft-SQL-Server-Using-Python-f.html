@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Using MSSQL with Python</title>
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="assets/css/starter-template.css" rel="stylesheet">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+<style type="text/css">
+html {
+	font-size: 90.0%;
+}
+
+h2 {
+	margin-top: 60px;
+}
+
+h4, h3 {
+	padding-top: 40px!;		
+}
+
+p {
+	font-size: 1.2em;
+}
+h4 {
+	font-size: 1.4em;
+}
+
+img, pre.prettyprint {
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+    color:#007bff;
+
+}
+blockquote {
+    border-left: 4px solid #999;
+    padding-left: 1rem;
+    page-break-inside: avoid;
+}
+</style>
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Python Notes</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Using MSSQL with Python <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <div class="starter-template">
+
+<h1 id="connecting-to-sql-server-using-python">Connecting to SQL Server using Python</h1>
+<h2 id="getting-started">Getting started</h2>
+<p><strong>Note:</strong> Microsoft recommends using the <code>pyodbc</code> driver.</p>
+<h2 id="configure-development-environment-for-pyodbc-python-development">Configure development environment for pyodbc Python development</h2>
+<p>Install ODBC Driver 18 for SQL Server (these should already be installed).</p>
+<p>If they aren't, download the drivers and install with,</p>
+<pre class="prettyprint"><code><div>    msiexec /i msodbcsql.msi ADDLOCAL=ALL
+</div></code></pre>
+<p>Add the licence,</p>
+<pre class="prettyprint"><code><div>    msiexec /quiet /passive /qn /i msodbcsql.msi IACCEPTMSODBCSQLLICENSETERMS=YES ADDLOCAL=ALL
+</div></code></pre>
+<h2 id="install-the-pyodbc-package">Install the pyodbc package</h2>
+<pre class="prettyprint"><code><div>    pip install pyodbc
+</div></code></pre>
+<p>Check the list of installed packages.</p>
+<p>'''bash<br>
+pip list<br>
+'''<br>
+Now, you can connect to a database with the following code.</p>
+<pre class="prettyprint"><code><div><span class="hljs-string">"""
+Connects to a SQL database using pyodbc
+"""</span>
+
+<span class="hljs-keyword">import</span> pyodbc
+
+SERVER = <span class="hljs-string">"TIGER"</span>
+DATABASE = <span class="hljs-string">"RecordDB"</span>
+
+connectionString = <span class="hljs-string">f"DRIVER={{ODBC Driver 18 for SQL Server}};SERVER=<span class="hljs-subst">{SERVER}</span>;DATABASE=<span class="hljs-subst">{DATABASE}</span>;Encrypt=No;Trusted_Connection=yes;"</span>
+
+conn = pyodbc.connect(connectionString)
+
+SQL_QUERY = <span class="hljs-string">"""
+SELECT 
+a.Name AS Artist, r.Name AS Album, r.Recorded, r.Media
+FROM 
+Artist a INNER JOIN
+Record r ON a.ArtistId = r.ArtistId
+ORDER BY 
+a.LastName, a.FirstName, r.Recorded DESC
+"""</span>
+
+cursor = conn.cursor()
+cursor.execute(SQL_QUERY)
+
+artists = cursor.fetchall()
+
+<span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> artists:
+    print(<span class="hljs-string">f"<span class="hljs-subst">{a.Artist}</span>:\t<span class="hljs-subst">{a.Recorded}</span> - <span class="hljs-subst">{a.Album}</span> (<span class="hljs-subst">{a.Media}</span>)"</span>)
+</div></code></pre>
+<p>Output:</p>
+<blockquote>
+<p>...<br>
+Neil Young:     2005 - Prairie Wind (CD)<br>
+Neil Young:     2005 - Chrome Dreams II (CD)<br>
+Neil Young:     2004 - Greatest Hits (CD)<br>
+...</p>
+</blockquote>
+<h3 id="gotchas">Gotchas</h3>
+<p>I had a couple of issues getting this code to work. The first was the original connection string I was using.</p>
+<pre class="prettyprint"><code><div>connectionString = <span class="hljs-string">f"DRIVER={{ODBC Driver 18 for SQL Server}};SERVER=<span class="hljs-subst">{SERVER}</span>;DATABASE=<span class="hljs-subst">{DATABASE}</span>;Trusted_Connection=yes;"</span>
+</div></code></pre>
+<p>This gave me a connection error with a bad certificate warning. To get around this.</p>
+<pre class="prettyprint"><code><div>connectionString = <span class="hljs-string">f"DRIVER={{ODBC Driver 18 for SQL Server}};SERVER=<span class="hljs-subst">{SERVER}</span>;DATABASE=<span class="hljs-subst">{DATABASE}</span>;Encrypt=No;Trusted_Connection=yes;"</span>
+</div></code></pre>
+<p>I added the <code>Encrypt=No;</code> to get around this issue.</p>
+<p>The next problem I had was that I had this working in Visual Studio Code with a Virtual Environment and then tried to use it with a Powershell command prompt. It didn't work.</p>
+<p>Activating the Virtual Environment with the following command got the code working.</p>
+<pre class="prettyprint"><code><div>    lpp3ed\Scripts\activate
+</div></code></pre>
+<p><strong>Note:</strong> this assumes that I had already installed the virtual environment.</p>
+<h2 id="insert-a-row-as-a-transaction">Insert a row as a transaction</h2>
+<p>In this example, you execute an <code>INSERT</code> statement safely and pass parameters. Passing parameters as values protects your application from SQL injection attacks.</p>
+<pre class="prettyprint"><code><div><span class="hljs-string">"""
+Connects to a SQL database using pyodbc
+"""</span>
+<span class="hljs-keyword">import</span> pyodbc
+<span class="hljs-keyword">from</span> random <span class="hljs-keyword">import</span> randrange
+
+SERVER = <span class="hljs-string">"TIGER"</span>
+DATABASE = <span class="hljs-string">"AdventureWorksLT"</span>
+
+connectionString = <span class="hljs-string">f"DRIVER={{ODBC Driver 18 for SQL Server}};SERVER=<span class="hljs-subst">{SERVER}</span>;DATABASE=<span class="hljs-subst">{DATABASE}</span>;Encrypt=No;Trusted_Connection=yes;"</span>
+
+conn = pyodbc.connect(connectionString)
+
+productNumber = randrange(<span class="hljs-number">1000</span>)
+
+SQL_QUERY = <span class="hljs-string">"""
+INSERT SalesLT.Product (
+Name, 
+ProductNumber, 
+StandardCost, 
+ListPrice, 
+SellStartDate
+) OUTPUT INSERTED.ProductID 
+VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+"""</span>
+
+cursor = conn.cursor()
+cursor.execute(
+    SQL_QUERY, <span class="hljs-string">f"Example Product <span class="hljs-subst">{productNumber}</span>"</span>, <span class="hljs-string">f"EXAMPLE-<span class="hljs-subst">{productNumber}</span>"</span>, <span class="hljs-number">100</span>, <span class="hljs-number">200</span>
+)
+
+resultId = cursor.fetchval()
+print(<span class="hljs-string">f"Inserted Product ID : <span class="hljs-subst">{resultId}</span>"</span>)
+conn.commit()
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>Inserted Product ID : 1000</p>
+</blockquote>
+
+
+
+
+</div><!-- starter-template -->
+</div><!-- /.container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"/>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+</body>
+</html>
