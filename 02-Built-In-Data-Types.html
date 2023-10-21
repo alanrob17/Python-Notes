@@ -423,6 +423,427 @@ code {
 <blockquote>
 <p>Numbers are <strong>immutable</strong> objects.</p>
 </blockquote>
+<h2 id="integers">Integers</h2>
+<p>Python integers have an unlimited range, subject only to the available virtual memory. This means that it doesn't really matter how big a number you want to store is—as long as it can fit in your computer's memory, Python will take care of it.</p>
+<p>Integer numbers can be positive, negative, or 0 (zero). They support all the basic mathematical operations, as shown in the following example:</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; a = 14
+    &gt;&gt;&gt; b = 3
+    &gt;&gt;&gt; a + b <span class="hljs-comment"># addition</span>
+    17
+    &gt;&gt;&gt; a - b <span class="hljs-comment"># subtraction</span>
+    11
+    &gt;&gt;&gt; a * b <span class="hljs-comment"># multiplication</span>
+    42
+    &gt;&gt;&gt; a / b <span class="hljs-comment"># true division</span>
+    4.666666666666667
+    &gt;&gt;&gt; a // b <span class="hljs-comment"># integer division</span>
+    4
+    &gt;&gt;&gt; a % b <span class="hljs-comment"># modulo operation (reminder of division)</span>
+    2
+    &gt;&gt;&gt; a ** b <span class="hljs-comment"># power operation</span>
+    2744
+</div></code></pre>
+<p>The preceding code should be easy to understand. Just notice one important thing: Python has two division operators, one performs the so-called <strong>true division</strong> (/), which returns the quotient of the operands, and another one, the so-called <strong>integer division</strong> (//), which returns the floored quotient of the operands.</p>
+<p>Let's see how division behaves differently when we introduce negative numbers:</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; 7 / 4 <span class="hljs-comment"># true division</span>
+    1.75
+    &gt;&gt;&gt; 7 // 4 <span class="hljs-comment"># integer division, truncation returns 1</span>
+    1
+    &gt;&gt;&gt; -7 / 4 <span class="hljs-comment"># true division again, result is opposite of previous</span>
+    -1.75
+    &gt;&gt;&gt; -7 // 4 <span class="hljs-comment"># integer div., result not the opposite of previous</span>
+    -2
+</div></code></pre>
+<p>This is an interesting example. If you were expecting a -1 on the last line, don't feel bad, it's just the way Python works. Integer division in Python is always rounded toward minus infinity. If, instead of flooring, you want to truncate a number to an integer, you can use the built-in <code>int()</code> function, as shown in the following example:</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; int(1.75)
+    1
+    &gt;&gt;&gt; int(-1.75)
+    -1
+</div></code></pre>
+<p>It's worth noting that the power operator, <code>**</code>, also has a built-in function counterpart, <code>pow()</code>, shown in the example below:</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; pow(10, 3)
+    1000.0 <span class="hljs-comment"># result is float</span>
+    &gt;&gt;&gt; 10 ** 3
+    1000 <span class="hljs-comment"># result is int</span>
+    &gt;&gt;&gt; pow(10, -3)
+    0.001
+    &gt;&gt;&gt; 10 ** -3
+    0.001
+</div></code></pre>
+<p>One nice feature introduced in Python 3.6 is the ability to add underscores within number literals (between digits or base specifiers, but not leading or trailing). The purpose is to help make some numbers more readable, such as <strong>1_000_000_000</strong>:</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; n = 1_024
+    &gt;&gt;&gt; n
+    1024
+    &gt;&gt;&gt; hex_n = 0x_4_0_0 <span class="hljs-comment"># 0x400 == 1024</span>
+    &gt;&gt;&gt; hex_n
+    1024
+</div></code></pre>
+<h2 id="booleans">Booleans</h2>
+<p>Boolean algebra is that subset of algebra in which the values of the variables are the truth values, true and false. In Python, True and False are two keywords that are used to represent truth values. Booleans are a subclass of integers, so <strong>True</strong> and <strong>False</strong> behave respectively like 1 and 0. The equivalent of the int class for Booleans is the bool class,<br>
+which returns either True or False. Every built-in Python object has a value in the Boolean context, which means they basically evaluate to either True or False when fed to the bool function.</p>
+<p>Boolean values can be combined in Boolean expressions using the logical operators and, or, and not.</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; int(True) <span class="hljs-comment"># True behaves like 1</span>
+    1
+    &gt;&gt;&gt; int(False) <span class="hljs-comment"># False behaves like 0</span>
+    0
+    &gt;&gt;&gt; bool(1) <span class="hljs-comment"># 1 evaluates to True in a Boolean context</span>
+    True
+    &gt;&gt;&gt; bool(-42) <span class="hljs-comment"># and so does every non-zero number</span>
+    True
+    &gt;&gt;&gt; bool(0) <span class="hljs-comment"># 0 evaluates to False</span>
+    False
+    &gt;&gt;&gt; <span class="hljs-comment"># quick peek at the operators (and, or, not)</span>
+    &gt;&gt;&gt; not True
+    False
+    &gt;&gt;&gt; not False
+    True
+    &gt;&gt;&gt; True and True
+    True
+    &gt;&gt;&gt; False or True
+    True
+</div></code></pre>
+<p>You can see that True and False are subclasses of integers when you try to add them. Python upcasts them to integers and performs the addition:</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; 1 + True
+    2
+    &gt;&gt;&gt; False + 42
+    42
+    &gt;&gt;&gt; 7 - True
+    6
+</div></code></pre>
+<h2 id="real-numbers">Real numbers</h2>
+<p>Real numbers, or <strong>floating point numbers</strong>, are represented in Python according to the <strong>IEEE 754</strong> double-precision binary floating point format, which is stored in 64 bits of information divided into three sections: sign, exponent, and mantissa.</p>
+<p>Several programming languages give coders two different formats: single and double precision. The former takes up 32 bits of memory, the latter 64. Python supports only the double format. Let's see a simple example:</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; pi = 3.1415926536 <span class="hljs-comment"># how many digits of PI can you remember?</span>
+    &gt;&gt;&gt; radius = 4.5
+    &gt;&gt;&gt; area = pi * (radius ** 2)
+    &gt;&gt;&gt; area
+    63.617251235400005
+</div></code></pre>
+<p><strong>Important:</strong> double precision numbers suffer from approximation issues even when it comes to simple numbers like 0.1 or 0.3. Why is this important? It can be a big problem if you are handling prices, or financial calculations, or any kind of data that need not to be approximated. Don't worry, Python gives you the Decimal type, which doesn't suffer from these issues;</p>
+<h2 id="fractions-and-decimals">Fractions and decimals</h2>
+<p>Let's finish the tour of the number department with a look at fractions and decimals. Fractions hold a rational numerator and denominator in their lowest forms. Let's see a quick example:</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; from fractions import Fraction
+    &gt;&gt;&gt; Fraction(10, 6) <span class="hljs-comment"># mad hatter?</span>
+    Fraction(5, 3) <span class="hljs-comment"># notice it's been simplified</span>
+    &gt;&gt;&gt; Fraction(1, 3) + Fraction(2, 3) <span class="hljs-comment"># 1/3 + 2/3 == 3/3 == 1/1</span>
+    Fraction(1, 1)
+    &gt;&gt;&gt; f = Fraction(10, 6)
+    &gt;&gt;&gt; f.numerator
+    5
+    &gt;&gt;&gt; f.denominator
+    3
+    &gt;&gt;&gt; f.as_integer_ratio()
+    (5, 3)
+</div></code></pre>
+<p>The <strong>as_integer_ratio()</strong> method has also been added to integers and Booleans. This is helpful, as it allows you to use it without needing to worry about what type of number is being worked with.</p>
+<p>Although Fraction objects can be very useful at times, it's not that common to spot them in commercial software. Instead, it is much more common to see decimal numbers being used in all those contexts where precision is everything; for example,<br>
+in scientific and financial calculations.</p>
+<p><strong>Note:</strong> It's important to remember that arbitrary precision decimal numbers come at a price in terms of performance, of course. The amount of data to be stored for each number is greater than it is for Fractions or floats. The way they are handled also requires the Python interpreter to work harder behind the scenes. Another interesting thing to note is that you can get and set the precision by accessing <code>decimal.getcontext().prec</code>.</p>
+<h2 id="lets-see-a-quick-example-with-decimal-numbers">Let's see a quick example with decimal numbers</h2>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; from decimal import Decimal as D <span class="hljs-comment"># rename for brevity</span>
+    &gt;&gt;&gt; D(3.14) <span class="hljs-comment"># pi, from float, so approximation issues</span>
+    Decimal(<span class="hljs-string">'3.140000000000000124344978758017532527446746826171875'</span>)
+    &gt;&gt;&gt; D(<span class="hljs-string">'3.14'</span>) <span class="hljs-comment"># pi, from a string, so no approximation issues</span>
+    Decimal(<span class="hljs-string">'3.14'</span>)
+    &gt;&gt;&gt; D(0.1) * D(3) - D(0.3) <span class="hljs-comment"># from float, we still have the issue</span>
+    Decimal(<span class="hljs-string">'2.775557561565156540423631668E-17'</span>)
+    &gt;&gt;&gt; D(<span class="hljs-string">'0.1'</span>) * D(3) - D(<span class="hljs-string">'0.3'</span>) <span class="hljs-comment"># from string, all perfect</span>
+    Decimal(<span class="hljs-string">'0.0'</span>)
+    &gt;&gt;&gt; D(<span class="hljs-string">'1.4'</span>).as_integer_ratio() <span class="hljs-comment"># 7/5 = 1.4 (isn't this cool?!)</span>
+    (7, 5)
+</div></code></pre>
+<p>Notice that when we construct a Decimal number from a float, it takes on all the approximation issues a float may come with. On the other hand, when we create a Decimal from an integer or a string representation of a number, then the Decimal will<br>
+have no approximation issues, and therefore no quirky behavior. When it comes to currency or situations in which precision is of utmost importance, use decimals.</p>
+<p>This concludes our introduction to built-in numeric types. Let's now look at sequences.</p>
+<h2 id="immutable-sequences">Immutable sequences</h2>
+<p>Let's start with immutable sequences: strings, tuples, and bytes.</p>
+<h2 id="strings-and-bytes">Strings and bytes</h2>
+<p>Textual data in Python is handled with <code>str</code> objects, more commonly known as <strong>strings</strong>. They are immutable sequences of <strong>Unicode code points</strong>. Unicode code points can represent a character, but can also have other meanings, such as when formatting, for example. Python, unlike other languages, doesn't have a <strong>char</strong> type, so a single character is rendered simply by a string of length 1.</p>
+<p>Unicode is an excellent way to handle data, and should be used for the internals of any application. When it comes to storing textual data though, or sending it on the network, you will likely want to encode it, using an appropriate encoding for the medium you are using. The result of an encoding produces a bytes object, whose syntax and behavior is similar to that of strings. String literals are written in Python using single, double, or triple quotes (both single or double). If built with triple quotes, a string can span multiple lines. An example will clarify this:</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; <span class="hljs-comment"># 4 ways to make a string</span>
+    &gt;&gt;&gt; str1 = <span class="hljs-string">'This is a string. We built it with single quotes.'</span>
+    &gt;&gt;&gt; str2 = <span class="hljs-string">"This is also a string, but built with double quotes."</span>
+    &gt;&gt;&gt; str3 = <span class="hljs-string">''</span><span class="hljs-string">'This is built using triple quotes,
+    ... so it can span multiple lines.'</span><span class="hljs-string">''</span>
+    &gt;&gt;&gt; str4 = <span class="hljs-string">""</span><span class="hljs-string">"This too
+    ... is a multiline one
+    ... built with triple double-quotes."</span><span class="hljs-string">""</span>
+    &gt;&gt;&gt; str4 <span class="hljs-comment">#A</span>
+    <span class="hljs-string">'This too\nis a multiline one\nbuilt with triple double-quotes.'</span>
+    &gt;&gt;&gt; <span class="hljs-built_in">print</span>(str4) <span class="hljs-comment">#B</span>
+    This too
+    is a multiline one
+    built with triple double-quotes.
+</div></code></pre>
+<p>Strings, like any sequence, have a length. You can get this by calling the <code>len()</code> function:</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; str1 = <span class="hljs-string">'This is a string. We built it with single quotes.'</span>
+    &gt;&gt;&gt; len(str1)
+    49
+</div></code></pre>
+<p>Python 3.9 has introduced two new methods that deal with the prefixes and suffixes of strings. Here's an example that explains the way they work:</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; s = <span class="hljs-string">'Hello There'</span>
+    &gt;&gt;&gt; s.removeprefix(<span class="hljs-string">'Hell'</span>)
+    <span class="hljs-string">'o There'</span>
+    &gt;&gt;&gt; s.removesuffix(<span class="hljs-string">'here'</span>)
+    <span class="hljs-string">'Hello T'</span>
+    &gt;&gt;&gt; s.removeprefix(<span class="hljs-string">'Ooops'</span>)
+    <span class="hljs-string">'Hello There'</span>
+</div></code></pre>
+<p>The nice thing about them is shown by the last instruction: when we attempt to remove a prefix or suffix which is not there, the method simply returns a copy of the original string. This means that these methods, behind the scenes, are checking if<br>
+the prefix or suffix matches the argument of the call, and when that's the case, they remove it.</p>
+<h2 id="encoding-and-decoding-strings">Encoding and decoding strings</h2>
+<p>Using the encode/decode methods, we can encode Unicode strings and decode bytes objects. UTF-8 is a variable-length character encoding, capable of encoding all possible Unicode code points. It is the most widely used encoding for the web.<br>
+Notice also that by adding the literal b in front of a string declaration, we're creating a bytes object:</p>
+<pre class="hljs"><code><div>    &gt;&gt;&gt; s = <span class="hljs-string">"This is üŋíc0de"</span> <span class="hljs-comment"># unicode string: code points</span>
+    &gt;&gt;&gt; <span class="hljs-built_in">type</span>(s)
+    &lt;class <span class="hljs-string">'str'</span>&gt;
+    &gt;&gt;&gt; encoded_s = s.encode(<span class="hljs-string">'utf-8'</span>) <span class="hljs-comment"># utf-8 encoded version of s</span>
+    &gt;&gt;&gt; encoded_s
+    b<span class="hljs-string">'This is \xc3\xbc\xc5\x8b\xc3\xadc0de'</span> <span class="hljs-comment"># result: bytes object</span>
+    &gt;&gt;&gt; <span class="hljs-built_in">type</span>(encoded_s) <span class="hljs-comment"># another way to verify it</span>
+    &lt;class <span class="hljs-string">'bytes'</span>&gt;
+    &gt;&gt;&gt; encoded_s.decode(<span class="hljs-string">'utf-8'</span>) <span class="hljs-comment"># let's revert to the original</span>
+    <span class="hljs-string">'This is üŋíc0de'</span>
+    &gt;&gt;&gt; bytes_obj = b<span class="hljs-string">"A bytes object"</span> <span class="hljs-comment"># a bytes object</span>
+    &gt;&gt;&gt; <span class="hljs-built_in">type</span>(bytes_obj)
+    &lt;class <span class="hljs-string">'bytes'</span>&gt;
+</div></code></pre>
+<h2 id="indexing-and-slicing-strings">Indexing and slicing strings</h2>
+<p>When manipulating sequences, it's very common to access them at one precise position (indexing), or to get a sub-sequence out of them (slicing). When dealing with immutable sequences, both operations are read-only. While indexing comes in one form—zero-based access to any position within the sequence—slicing comes in different forms. When you get a slice of a sequence, you can specify the start and stop positions, along with the step. They are separated with a colon ( : ) like this: my_sequence[start:stop:step]. All the arguments are optional; start is inclusive, and stop is exclusive. It's probably better to see an example, rather than try to explain them any further with words:</p>
+<pre class="hljs"><code><div>    s = <span class="hljs-string">"The trouble is you think you have time."</span>
+
+    print(s[<span class="hljs-number">0</span>])  <span class="hljs-comment"># indexing at position 0, which is the first char</span>
+    print(s[<span class="hljs-number">5</span>])  <span class="hljs-comment"># indexing at position 5, which is the sixth char</span>
+    print(s[:<span class="hljs-number">4</span>])  <span class="hljs-comment"># slicing, we specify only the stop position</span>
+    print(s[<span class="hljs-number">4</span>:])  <span class="hljs-comment"># slicing, we specify only the start position</span>
+    print(s[<span class="hljs-number">2</span>:<span class="hljs-number">14</span>])  <span class="hljs-comment"># slicing, both start and stop positions</span>
+    print(s[<span class="hljs-number">2</span>:<span class="hljs-number">14</span>:<span class="hljs-number">3</span>])  <span class="hljs-comment"># slicing, start, stop and step (every 3 chars)</span>
+    print(s[:])  <span class="hljs-comment"># quick way of making a copy</span>
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>T<br>
+r<br>
+The<br>
+trouble is you think you have time.<br>
+e trouble is<br>
+erb<br>
+The trouble is you think you have time.</p>
+</blockquote>
+<p>The last line is quite interesting. If you don't specify any of the parameters, Python will fill in the defaults for you. In this case, start will be the start of the string, stop will be the end of the string, and step will be the default: 1. This is an easy and quick way of obtaining a copy of the string s (the same value, but a different object). Can you think of a way to get the reversed copy of a string using slicing (don't look it up—find it for yourself)?</p>
+<pre class="hljs"><code><div>    <span class="hljs-built_in">print</span>(s[::-1])
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>.emit evah uoy kniht uoy si elbuort ehT</p>
+</blockquote>
+<h2 id="string-formatting">String formatting</h2>
+<p>One of the features strings have is the ability to be used as a template. There are several different ways of formatting a string, and for the full list of possibilities, we encourage you to look up the documentation. Here are some common examples:</p>
+<pre class="hljs"><code><div>    greet_old = <span class="hljs-string">"Hello %s!"</span>
+    print(greet_old % <span class="hljs-string">"Alan"</span>)
+
+    greet_positional = <span class="hljs-string">"Hello {}!"</span>
+    print(greet_positional.format(<span class="hljs-string">"Alan"</span>))
+
+    greet_positional = <span class="hljs-string">"Hello {} {}!"</span>
+    greet_positional.format(<span class="hljs-string">"Alan"</span>, <span class="hljs-string">"Robson"</span>)
+
+    greet_positional_idx = <span class="hljs-string">"This is {0}! {1} loves {0}!"</span>
+    print(greet_positional_idx.format(<span class="hljs-string">"Python"</span>, <span class="hljs-string">"James"</span>))
+
+    print(greet_positional_idx.format(<span class="hljs-string">"Coffee"</span>, <span class="hljs-string">"Al"</span>))
+
+    keyword = <span class="hljs-string">"Hello, my name is {name} {last_name}"</span>
+    print(keyword.format(name=<span class="hljs-string">"Alan"</span>, last_name=<span class="hljs-string">"Robson"</span>))
+</div></code></pre>
+<p>One last feature we want to show you was added to Python in version 3.6, and it's called <strong>formatted string literals</strong>. This feature is quite cool (and it is faster than using the <code>format()</code> method): strings are prefixed with f, and contain replacement fields surrounded by curly braces.</p>
+<p>Replacement fields are expressions evaluated at runtime, and then formatted using<br>
+the format protocol:</p>
+<pre class="hljs"><code><div>    name = <span class="hljs-string">"Alan"</span>
+    age = <span class="hljs-number">71</span>
+
+    message = <span class="hljs-string">f"Hello! My name is <span class="hljs-subst">{name}</span> and I'm <span class="hljs-subst">{age}</span>"</span>
+
+    print(message)
+
+    <span class="hljs-keyword">from</span> math <span class="hljs-keyword">import</span> pi
+
+    message2 = <span class="hljs-string">f"No arguing with <span class="hljs-subst">{pi}</span>, it's irrational..."</span>
+
+    print(message2)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>Hello! My name is Alan and I'm 71<br>
+No arguing with 3.141592653589793, it's irrational...</p>
+</blockquote>
+<p>An interesting addition to f-strings, which was introduced in Python 3.8, is the ability to add an <strong>equals</strong> sign specifier within the f-string clause; this causes the expression to expand to the text of the expression, an equals sign, then the representation of the evaluated expression. This is great for self-documenting and debugging purposes.</p>
+<pre class="hljs"><code><div>    user = <span class="hljs-string">"alan"</span>
+    password = <span class="hljs-string">"super-secret"</span>
+
+    print(<span class="hljs-string">f"Log in with: <span class="hljs-subst">{user}</span> and <span class="hljs-subst">{password}</span>"</span>)
+
+    print(<span class="hljs-string">f"Log in with: <span class="hljs-subst">{user=}</span> and <span class="hljs-subst">{password=}</span>"</span>)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>Log in with: alan and super-secret<br>
+Log in with: user='alan' and password='super-secret'</p>
+</blockquote>
+<p>Some more examples of f-strings.</p>
+<pre class="hljs"><code><div>    name = <span class="hljs-string">"Alan"</span>
+    age = <span class="hljs-number">71</span>
+
+    print(<span class="hljs-string">f"Hello, My name is <span class="hljs-subst">{name}</span> and I'm <span class="hljs-subst">{age}</span> years old."</span>)
+</div></code></pre>
+<blockquote>
+<p>Hello, My name is Alan and I'm 71 years old.</p>
+</blockquote>
+<pre class="hljs"><code><div>    <span class="hljs-comment"># Prints today's date with help</span>
+    <span class="hljs-comment"># of datetime library</span>
+    <span class="hljs-keyword">import</span> datetime
+
+    today = datetime.datetime.today()
+    print(<span class="hljs-string">f"<span class="hljs-subst">{today:%B %d, %Y}</span>"</span>)
+</div></code></pre>
+<blockquote>
+<p>October 10, 2023</p>
+</blockquote>
+<h2 id="tuples">Tuples</h2>
+<p>The last immutable sequence type we are going to look at here is the tuple. A tuple is a sequence of arbitrary Python objects. In a tuple declaration, items are separated by commas. Tuples are used everywhere in Python. They allow for patterns that are quite hard to reproduce in other languages. Sometimes tuples are used implicitly; for example, to set up multiple variables on one line, or to allow a function to return multiple objects (in several languages, it is common for a function to return only one object), and in the Python console, tuples can be used implicitly to print multiple elements with one single instruction.</p>
+<pre class="hljs"><code><div>    t = ()  <span class="hljs-comment"># empty tuple</span>
+    print(type(t))
+
+    one_element_tuple = (<span class="hljs-number">42</span>,)  <span class="hljs-comment"># you need the comma!</span>
+    three_elements_tuple = (<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>)  <span class="hljs-comment"># braces are optional here</span>
+
+    a, b, c = <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>  <span class="hljs-comment"># tuple for multiple assignment</span>
+    print(a, b, c)  <span class="hljs-comment"># implicit tuple to print with one instruction</span>
+
+    print(<span class="hljs-number">3</span> <span class="hljs-keyword">in</span> three_elements_tuple)  <span class="hljs-comment"># membership test</span>
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>&lt;class 'tuple'&gt;<br>
+1 2 3<br>
+True</p>
+</blockquote>
+<p>Notice that the membership operator in can also be used with lists, strings, dictionaries, and, in general, with collection and sequence objects.</p>
+<p><strong>Note:</strong> Notice that to create a tuple with one item, we need to put a comma after the item. The reason is that without the comma that item is wrapped in braces on its own, in what can be considered a redundant mathematical expression. Notice also that on assignment, braces are optional, so my_tuple = 1, 2, 3 is the same as my_tuple = (1, 2, 3).</p>
+<p>One thing that tuple assignment allows us to do is <em>one-line swaps</em>, with no need for a third temporary variable. Let's first see the traditional way of doing it:</p>
+<pre class="hljs"><code><div>    a, b = <span class="hljs-number">1</span>, <span class="hljs-number">2</span>
+    c = a  <span class="hljs-comment"># we need three lines and a temporary var c</span>
+    a = b
+    b = c
+    a, b  <span class="hljs-comment"># a and b have been swapped</span>
+    print(a, b)
+    print(c)
+    
+    a, b = <span class="hljs-number">0</span>, <span class="hljs-number">1</span>
+    a, b = b, a  <span class="hljs-comment"># this is the Pythonic way to do it</span>
+    print(a, b)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>2 1<br>
+1<br>
+1 0</p>
+</blockquote>
+<p>Take a look at the line that shows you the Pythonic way of swapping two values. A Python program is typically one-fifth to one-third the size of equivalent Java or C++ code, and features like one-line swaps contribute to this. Python is elegant, where elegance in this context also means economy.</p>
+<p>Because they are immutable, tuples can be used as keys for dictionaries (we'll see this shortly). To us, tuples are Python's built-in data that most closely represent a mathematical vector. This doesn't mean that this was the reason for which they were created, though. Tuples usually contain a heterogeneous sequence of elements while, on the other hand, lists are, most of the time, homogeneous. Moreover, tuples are normally accessed via unpacking or indexing, while lists are usually iterated over.</p>
+<h2 id="mutable-sequences">Mutable sequences</h2>
+<p><strong>Mutable</strong> sequences differ from their <strong>immutable</strong> counterparts in that they can be changed after creation. There are two mutable sequence types in Python: lists and byte arrays.</p>
+<h2 id="lists">Lists</h2>
+<p>Python lists are very similar to tuples, but they don't have the restrictions of immutability. Lists are commonly used for storing collections of homogeneous objects, but there is nothing preventing you from storing heterogeneous collections<br>
+as well. Lists can be created in many different ways.</p>
+<pre class="hljs"><code><div>        []  <span class="hljs-comment"># empty list</span>
+        print([])
+
+        x = list()  <span class="hljs-comment"># same as []</span>
+        print(x)
+
+        a = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]  <span class="hljs-comment"># as with tuples, items are comma separated</span>
+        print(a)
+
+        b = [x + <span class="hljs-number">5</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]]  <span class="hljs-comment"># Python is magic</span>
+        print(b)
+
+        c = list((<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>))  <span class="hljs-comment"># list from a tuple</span>
+        print(c)
+
+        d = list(<span class="hljs-string">"hello"</span>)  <span class="hljs-comment"># list from a string</span>
+        print(d)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>[]<br>
+[]<br>
+[1, 2, 3]<br>
+[7, 8, 9]<br>
+[1, 3, 5, 7, 9]<br>
+['h', 'e', 'l', 'l', 'o']</p>
+</blockquote>
+<p>In the previous example, we showed you how to create a list using various techniques. We would like you to take a good look at the line with the comment Python is magic, which we don't expect you to fully understand at this point—especially if you are unfamiliar with Python. That is called a list comprehension: a very powerful functional feature of Python.</p>
+<p>Creating lists is good, but the real fun begins when we use them, so let's see the main methods they gift us with:</p>
+<pre class="hljs"><code><div>    a = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>]
+    a.append(<span class="hljs-number">13</span>)  <span class="hljs-comment"># we can append anything at the end</span>
+    print(a)
+
+    print(a.count(<span class="hljs-number">1</span>))  <span class="hljs-comment"># how many `1s` are there in the list?</span>
+
+    a.extend([<span class="hljs-number">5</span>, <span class="hljs-number">7</span>])  <span class="hljs-comment"># extend the list by another (or sequence)</span>
+    print(a)
+
+    print(a.index(<span class="hljs-number">13</span>))  <span class="hljs-comment"># position of `13` in the list (0-based indexing)</span>
+
+    a.insert(<span class="hljs-number">0</span>, <span class="hljs-number">17</span>)  <span class="hljs-comment"># insert `17` at position 0</span>
+    print(a)
+
+    print(a.pop())  <span class="hljs-comment"># pop (remove and return) last element</span>
+
+    a.pop(<span class="hljs-number">3</span>)  <span class="hljs-comment"># pop element at position 3</span>
+    print(a)
+
+    a.remove(<span class="hljs-number">17</span>)  <span class="hljs-comment"># remove `17` from the list</span>
+    print(a)
+
+    a.reverse()  <span class="hljs-comment"># reverse the order of the elements in the list</span>
+    print(a)
+
+    a.sort()  <span class="hljs-comment"># sort the list</span>
+    print(a)
+
+    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> a:
+        print(item)
+
+    a.clear()  <span class="hljs-comment"># remove all elements from the list</span>
+    print(a)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>[1, 2, 1, 3, 13]<br>
+2<br>
+[1, 2, 1, 3, 13, 5, 7]<br>
+4<br>
+[17, 1, 2, 1, 3, 13, 5, 7]<br>
+7<br>
+[17, 1, 2, 3, 13, 5]<br>
+[1, 2, 3, 13, 5]<br>
+[5, 13, 3, 2, 1]<br>
+[1, 2, 3, 5, 13]<br>
+1<br>
+2<br>
+3<br>
+5<br>
+13<br>
+[]</p>
+</blockquote>
+<p><strong>Note:</strong> this is how you iterate through a list.</p>
+<pre class="hljs"><code><div>    a = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">13</span>]
+
+    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> a:
+        print(item)
+</div></code></pre>
 
 </body>
 </html>

@@ -132,3 +132,17 @@ To finish working in your virtual environment.
 ```bash
     (lpp3ed) C:\Temp\Python\my-project>deactivate
 ```
+
+## Using Python in Visual Studio Code
+
+If you are using VS Code and your project has been setup to use virtual environments when you use Powershell as your terminal it automatically activates ``lpp3ed`` for you.
+
+This is an example of the output from the Powershell terminal.
+
+```powershell
+    (lpp3ed) PS C:\Temp\Python\my-project> python test.py
+    File content:
+    This is the line we want to write
+    This is an appended line
+    (lpp3ed) PS C:\Temp\Python\my-project>
+```

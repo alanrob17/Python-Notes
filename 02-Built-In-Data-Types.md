@@ -326,7 +326,7 @@ Notice also that by adding the literal b in front of a string declaration, we're
 
 ## Indexing and slicing strings
 
-When manipulating sequences, it's very common to access them at one precise position (indexing), or to get a sub-sequence out of them (slicing). When dealing with immutable sequences, both operations are read-only. While indexing comes in one form—zero-based access to any position within the sequence—slicing comes in different forms. When you get a slice of a sequence, you can specify the start and stop positions, along with the step. They are separated with a colon (:) like this: my_sequence[start:stop:step]. All the arguments are optional; start is inclusive, and stop is exclusive. It's probably better to see an example, rather than try to explain them any further with words:
+When manipulating sequences, it's very common to access them at one precise position (indexing), or to get a sub-sequence out of them (slicing). When dealing with immutable sequences, both operations are read-only. While indexing comes in one form—zero-based access to any position within the sequence—slicing comes in different forms. When you get a slice of a sequence, you can specify the start and stop positions, along with the step. They are separated with a colon ( : ) like this: my_sequence[start:stop:step]. All the arguments are optional; start is inclusive, and stop is exclusive. It's probably better to see an example, rather than try to explain them any further with words:
 
 ```python
     s = "The trouble is you think you have time."
@@ -445,3 +445,185 @@ Some more examples of f-strings.
 ```
 
 > October 10, 2023
+
+## Tuples
+
+The last immutable sequence type we are going to look at here is the tuple. A tuple is a sequence of arbitrary Python objects. In a tuple declaration, items are separated by commas. Tuples are used everywhere in Python. They allow for patterns that are quite hard to reproduce in other languages. Sometimes tuples are used implicitly; for example, to set up multiple variables on one line, or to allow a function to return multiple objects (in several languages, it is common for a function to return only one object), and in the Python console, tuples can be used implicitly to print multiple elements with one single instruction.
+
+```python
+    t = ()  # empty tuple
+    print(type(t))
+
+    one_element_tuple = (42,)  # you need the comma!
+    three_elements_tuple = (1, 3, 5)  # braces are optional here
+
+    a, b, c = 1, 2, 3  # tuple for multiple assignment
+    print(a, b, c)  # implicit tuple to print with one instruction
+
+    print(3 in three_elements_tuple)  # membership test
+```
+
+Returns:
+
+> <class 'tuple'>       
+> 1 2 3     
+> True
+
+Notice that the membership operator in can also be used with lists, strings, dictionaries, and, in general, with collection and sequence objects.
+
+**Note:** Notice that to create a tuple with one item, we need to put a comma after the item. The reason is that without the comma that item is wrapped in braces on its own, in what can be considered a redundant mathematical expression. Notice also that on assignment, braces are optional, so my_tuple = 1, 2, 3 is the same as my_tuple = (1, 2, 3).
+
+One thing that tuple assignment allows us to do is *one-line swaps*, with no need for a third temporary variable. Let's first see the traditional way of doing it:
+
+```python
+    a, b = 1, 2
+    c = a  # we need three lines and a temporary var c
+    a = b
+    b = c
+    a, b  # a and b have been swapped
+    print(a, b)
+    print(c)
+    
+    a, b = 0, 1
+    a, b = b, a  # this is the Pythonic way to do it
+    print(a, b)
+```
+
+Returns:
+
+> 2 1       
+> 1     
+> 1 0
+
+Take a look at the line that shows you the Pythonic way of swapping two values. A Python program is typically one-fifth to one-third the size of equivalent Java or C++ code, and features like one-line swaps contribute to this. Python is elegant, where elegance in this context also means economy.
+
+Because they are immutable, tuples can be used as keys for dictionaries (we'll see this shortly). To us, tuples are Python's built-in data that most closely represent a mathematical vector. This doesn't mean that this was the reason for which they were created, though. Tuples usually contain a heterogeneous sequence of elements while, on the other hand, lists are, most of the time, homogeneous. Moreover, tuples are normally accessed via unpacking or indexing, while lists are usually iterated over.
+
+## Mutable sequences
+
+**Mutable** sequences differ from their **immutable** counterparts in that they can be changed after creation. There are two mutable sequence types in Python: lists and byte arrays.
+
+## Lists
+
+Python lists are very similar to tuples, but they don't have the restrictions of immutability. Lists are commonly used for storing collections of homogeneous objects, but there is nothing preventing you from storing heterogeneous collections
+as well. Lists can be created in many different ways.
+
+```python
+        []  # empty list
+        print([])
+
+        x = list()  # same as []
+        print(x)
+
+        a = [1, 2, 3]  # as with tuples, items are comma separated
+        print(a)
+
+        b = [x + 5 for x in [2, 3, 4]]  # Python is magic
+        print(b)
+
+        c = list((1, 3, 5, 7, 9))  # list from a tuple
+        print(c)
+
+        d = list("hello")  # list from a string
+        print(d)
+```
+
+Returns:
+
+> []        
+> []        
+> [1, 2, 3]     
+> [7, 8, 9]     
+> [1, 3, 5, 7, 9]       
+> ['h', 'e', 'l', 'l', 'o']
+
+In the previous example, we showed you how to create a list using various techniques. We would like you to take a good look at the line with the comment Python is magic, which we don't expect you to fully understand at this point—especially if you are unfamiliar with Python. That is called a list comprehension: a very powerful functional feature of Python.
+
+Creating lists is good, but the real fun begins when we use them, so let's see the main methods they gift us with:
+
+```python
+    a = [1, 2, 1, 3]
+    a.append(13)  # we can append anything at the end
+    print(a)
+
+    print(a.count(1))  # how many `1s` are there in the list?
+
+    a.extend([5, 7])  # extend the list by another (or sequence)
+    print(a)
+
+    print(a.index(13))  # position of `13` in the list (0-based indexing)
+
+    a.insert(0, 17)  # insert `17` at position 0
+    print(a)
+
+    print(a.pop())  # pop (remove and return) last element
+
+    a.pop(3)  # pop element at position 3
+    print(a)
+
+    a.remove(17)  # remove `17` from the list
+    print(a)
+
+    a.reverse()  # reverse the order of the elements in the list
+    print(a)
+
+    a.sort()  # sort the list
+    print(a)
+
+    for item in a:
+        print(item)
+
+    a.clear()  # remove all elements from the list
+    print(a)
+```
+
+Returns:
+
+> [1, 2, 1, 3, 13]      
+> 2     
+> [1, 2, 1, 3, 13, 5, 7]        
+> 4     
+> [17, 1, 2, 1, 3, 13, 5, 7]        
+> 7     
+> [17, 1, 2, 3, 13, 5]      
+> [1, 2, 3, 13, 5]      
+> [5, 13, 3, 2, 1]      
+> [1, 2, 3, 5, 13]      
+> 1     
+> 2     
+> 3     
+> 5     
+> 13        
+> []
+
+**Note:** this is how you iterate through a list.
+
+```python
+    a = [1, 2, 3, 5, 13]
+
+    for item in a:
+        print(item)
+```
+
+The preceding code gives you a roundup of a list's main methods. There is also the method ``extend()``. You can extend lists using any sequence type:
+
+```python
+    a = list("hello")  # makes a list from a string
+    print(a)
+
+    a.append(100)  # append 100, heterogeneous type
+    print(a)
+
+    a.extend((1, 2, 3))  # extend using tuple
+    print(a)
+
+    a.extend("...")  # extend using string
+    print(a)
+```
+
+Returns:
+
+> ['h', 'e', 'l', 'l', 'o']     
+> ['h', 'e', 'l', 'l', 'o', 100]        
+> ['h', 'e', 'l', 'l', 'o', 100, 1, 2, 3]       
+> ['h', 'e', 'l', 'l', 'o', 100, 1, 2, 3, '.', '.', '.']
