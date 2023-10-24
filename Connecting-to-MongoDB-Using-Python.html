@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Connecting-to-MongoDB-Using-Python.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="connecting-to-mongodb-using-python">Connecting to MongoDB using Python</h1>
+<h2 id="getting-started">Getting started</h2>
+<p>Install the driver for MongoDB</p>
+<pre class="hljs"><code><div>    pip install pymongo
+</div></code></pre>
+<p><strong>Important Note:</strong> I have had problems with this command. When I run a script with pymongo it gets an error.</p>
+<p>You can force an install with.</p>
+<pre class="hljs"><code><div>    python -m pip install pymongo
+</div></code></pre>
+<p>And this seems to fix the problem.</p>
+<p>Check with.</p>
+<pre class="hljs"><code><div>    pip list
+</div></code></pre>
+<p>Returns.</p>
+<blockquote>
+<p>pymongo 4.5.0</p>
+</blockquote>
+<p>Now, you can connect to a database with the following code.</p>
+<h2 id="creating-documents-in-mongodb">Creating documents in MongoDB</h2>
+<pre class="hljs"><code><div>    <span class="hljs-keyword">import</span> pymongo
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">createMany</span><span class="hljs-params">(client, documents)</span>:</span>
+        db = client[<span class="hljs-string">"TestDB"</span>]
+        collection = db[<span class="hljs-string">"Test"</span>]
+        collection.insert_many(documents)
+
+    client = pymongo.MongoClient(<span class="hljs-string">"mongodb://localhost:27017"</span>)
+
+    documents = [
+        {<span class="hljs-string">"id"</span>: <span class="hljs-number">11</span>, <span class="hljs-string">"item"</span>: <span class="hljs-string">"Americanos"</span>, <span class="hljs-string">"size"</span>: <span class="hljs-string">"Short"</span>, <span class="hljs-string">"quantity"</span>: <span class="hljs-number">22</span>},
+        {<span class="hljs-string">"id"</span>: <span class="hljs-number">12</span>, <span class="hljs-string">"item"</span>: <span class="hljs-string">"Latte"</span>, <span class="hljs-string">"size"</span>: <span class="hljs-string">"Long"</span>, <span class="hljs-string">"quantity"</span>: <span class="hljs-number">12</span>},
+        {<span class="hljs-string">"id"</span>: <span class="hljs-number">13</span>, <span class="hljs-string">"item"</span>: <span class="hljs-string">"Cappuccino"</span>, <span class="hljs-string">"size"</span>: <span class="hljs-string">"Long"</span>, <span class="hljs-string">"quantity"</span>: <span class="hljs-number">42</span>},
+        {<span class="hljs-string">"id"</span>: <span class="hljs-number">14</span>, <span class="hljs-string">"item"</span>: <span class="hljs-string">"Mocha"</span>, <span class="hljs-string">"size"</span>: <span class="hljs-string">"Short"</span>, <span class="hljs-string">"quantity"</span>: <span class="hljs-number">25</span>},
+        {<span class="hljs-string">"id"</span>: <span class="hljs-number">15</span>, <span class="hljs-string">"item"</span>: <span class="hljs-string">"Americanos"</span>, <span class="hljs-string">"size"</span>: <span class="hljs-string">"Short"</span>, <span class="hljs-string">"quantity"</span>: <span class="hljs-number">34</span>},
+    ]
+
+    createMany(client, documents)
+</div></code></pre>
+<p>This code allows you to create a number of documents in the <code>Test</code> collection in the <strong>TestDB</strong> database.</p>
+<h2 id="reading-documents-in-mongodb">Reading documents in MongoDB</h2>
+<pre class="hljs"><code><div>    <span class="hljs-keyword">import</span> pymongo
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">readDocuments</span><span class="hljs-params">(client, condition)</span>:</span>
+        db = client[<span class="hljs-string">"TestDB"</span>]
+        collection = db[<span class="hljs-string">"Test"</span>]
+        results = collection.find(condition)
+
+        <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> results:
+            print(row)
+
+    client = pymongo.MongoClient(<span class="hljs-string">"mongodb://localhost:27017"</span>)
+
+    condition = {<span class="hljs-string">"item"</span>: {<span class="hljs-string">"$eq"</span>: <span class="hljs-string">"Latte"</span>}}
+
+    readDocuments(client, condition)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>{'_id': ObjectId('653616265e54db92a3c68579'), 'id': 2, 'item': 'Latte', 'size': 'Short', 'quantity': 34}<br>
+{'_id': ObjectId('653616fb5e54db92a3c6857e'), 'id': 7, 'item': 'Latte', 'size': 'Short', 'quantity': 12}<br>
+{'_id': ObjectId('65361c9832fa9340e9e44153'), 'id': 12, 'item': 'Latte', 'size': 'Long', 'quantity': 12}<br>
+{'_id': ObjectId('65371907180d6d1178b96358'), 'id': 14, 'item': 'Latte', 'size': 'Long', 'quantity': 12}</p>
+</blockquote>
+<h2 id="update-documents-in-mongodb">Update documents in MongoDB</h2>
+<p>We want to change documents with item = <em>Americanos</em> to <em>Americano</em>.</p>
+<pre class="hljs"><code><div>    <span class="hljs-keyword">import</span> pymongo
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">updateDoc</span><span class="hljs-params">(client, condition, operation)</span>:</span>
+        db = client[<span class="hljs-string">"TestDB"</span>]
+        collection = db[<span class="hljs-string">"Test"</span>]
+        results = collection.update_many(condition, operation)
+
+        print(results.modified_count)
+
+    client = pymongo.MongoClient(<span class="hljs-string">"mongodb://localhost:27017"</span>)
+
+    condition = {<span class="hljs-string">"item"</span>: {<span class="hljs-string">"$eq"</span>: <span class="hljs-string">"Americanos"</span>}}
+    operation = {<span class="hljs-string">"$set"</span>: {<span class="hljs-string">"item"</span>: <span class="hljs-string">"Americano"</span>}}
+
+    updateDoc(client, condition, operation)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>6</p>
+</blockquote>
+<p>Meaning 6 documents were modified.</p>
+<h2 id="deleting-documents-in-mongodb">Deleting documents in MongoDB</h2>
+<pre class="hljs"><code><div>    <span class="hljs-keyword">import</span> pymongo
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deleteDocument</span><span class="hljs-params">(client, condition)</span>:</span>
+        db = client[<span class="hljs-string">"TestDB"</span>]
+        collection = db[<span class="hljs-string">"Test"</span>]
+        results = collection.delete_many(condition)
+
+        print(results.deleted_count)
+
+
+    client = pymongo.MongoClient(<span class="hljs-string">"mongodb://localhost:27017"</span>)
+
+    condition = {<span class="hljs-string">"id"</span>: {<span class="hljs-string">"$eq"</span>: <span class="hljs-number">15</span>}}
+
+    deleteDocument(client, condition)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>1</p>
+</blockquote>
+<p>Meaning one document was deleted.</p>
+<h2 id="querying-two-related-collections">Querying two related collections</h2>
+<p>I am querying the <strong>artists</strong> collection to find the <strong>artistid</strong> and then querying the <strong>records</strong> collection to find all documents with that <code>artistid</code>.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> pymongo
+
+client = pymongo.MongoClient(<span class="hljs-string">"mongodb://localhost:27017"</span>)
+
+db = client[<span class="hljs-string">"record-db"</span>]
+
+artist_name = <span class="hljs-string">"Bob Dylan"</span>
+
+artist_document = db[<span class="hljs-string">"artists"</span>].find_one({<span class="hljs-string">"name"</span>: artist_name})
+
+<span class="hljs-keyword">if</span> artist_document:
+    artistid = artist_document[<span class="hljs-string">"artistid"</span>]
+<span class="hljs-keyword">else</span>:
+    print(<span class="hljs-string">f"Artist '<span class="hljs-subst">{artist_name}</span>' not found in the 'artists' collection."</span>)
+    artistid = <span class="hljs-literal">None</span>
+
+<span class="hljs-keyword">if</span> artistid <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+    records = (
+        db[<span class="hljs-string">"records"</span>]
+        .find({<span class="hljs-string">"artistid"</span>: artistid})
+        .sort([(<span class="hljs-string">"recorded"</span>, pymongo.DESCENDING)])
+    )
+
+    album_names = [
+        [record[<span class="hljs-string">"name"</span>], record[<span class="hljs-string">"recorded"</span>], record[<span class="hljs-string">"media"</span>]] <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> records
+    ]
+
+    <span class="hljs-keyword">if</span> album_names:
+        print(<span class="hljs-string">f"Albums by <span class="hljs-subst">{artist_name}</span>:"</span>)
+
+        <span class="hljs-keyword">for</span> album_name <span class="hljs-keyword">in</span> album_names:
+            <span class="hljs-keyword">if</span> album_name[<span class="hljs-number">2</span>] == <span class="hljs-string">"CD-Audio"</span>:
+                album_name[<span class="hljs-number">2</span>] = <span class="hljs-string">"CD"</span>
+            <span class="hljs-keyword">if</span> album_name[<span class="hljs-number">2</span>] == <span class="hljs-string">"Record"</span>:
+                album_name[<span class="hljs-number">2</span>] = <span class="hljs-string">"R"</span>
+
+            print(<span class="hljs-string">f"\t<span class="hljs-subst">{album_name[<span class="hljs-number">1</span>]}</span>: <span class="hljs-subst">{album_name[<span class="hljs-number">0</span>]}</span> (<span class="hljs-subst">{album_name[<span class="hljs-number">2</span>]}</span>)"</span>)
+    <span class="hljs-keyword">else</span>:
+        print(<span class="hljs-string">f"No albums found for <span class="hljs-subst">{artist_name}</span>."</span>)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>Albums by Bob Dylan:<br>
+2005: Modern Times (CD)<br>
+2001: Love And Theft (CD)<br>
+2001: The Essential Bob Dylan (CD)<br>
+1997: Time Out Of Mind (CD)<br>
+...</p>
+</blockquote>
+<h2 id="getting-albums-by-year-recorded">Getting albums by year recorded</h2>
+<p>This code will select all records for a particular year. It then gets a list of artists who released albums in that year.</p>
+<p>I iterate through each artist and then get a list of their albums to print out.</p>
+<pre class="hljs"><code><div>    <span class="hljs-keyword">import</span> pymongo
+
+    client = pymongo.MongoClient(<span class="hljs-string">"mongodb://localhost:27017"</span>)
+
+    db = client[<span class="hljs-string">"record-db"</span>]
+
+    recorded_year = <span class="hljs-number">1974</span>
+
+    records_by_year = db[<span class="hljs-string">"records"</span>].find({<span class="hljs-string">"recorded"</span>: recorded_year})
+
+    artist_ids = list({record[<span class="hljs-string">"artistid"</span>] <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> records_by_year})
+
+    artists_in_year = db[<span class="hljs-string">"artists"</span>].find({<span class="hljs-string">"artistid"</span>: {<span class="hljs-string">"$in"</span>: artist_ids}})
+
+    artists_in_year = artists_in_year.sort(
+        [(<span class="hljs-string">"lastname"</span>, pymongo.ASCENDING), (<span class="hljs-string">"firstname"</span>, pymongo.ASCENDING)]
+    )
+
+    print(<span class="hljs-string">f"\nAlbums by year: <span class="hljs-subst">{recorded_year}</span>\n"</span>)
+
+    <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists_in_year:
+        print(<span class="hljs-string">f"\t<span class="hljs-subst">{artist[<span class="hljs-string">'name'</span>]}</span>"</span>)
+
+        <span class="hljs-comment"># Create a new cursor for records by the year for each artist</span>
+        records_by_year = db[<span class="hljs-string">"records"</span>].find(
+            {<span class="hljs-string">"recorded"</span>: recorded_year, <span class="hljs-string">"artistid"</span>: artist[<span class="hljs-string">"artistid"</span>]}
+        )
+
+        <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> records_by_year:
+            print(<span class="hljs-string">f"\t\t<span class="hljs-subst">{record[<span class="hljs-string">'name'</span>]}</span> (<span class="hljs-subst">{record[<span class="hljs-string">'media'</span>]}</span>)"</span>)
+
+    print()
+</div></code></pre>
+<p>Returns:</p>
+<pre class="hljs"><code><div>        ...
+        Ry Cooder
+                Paradise And Lunch (R)
+                Paradise And Lunch (CD)
+        Miles Davis
+                Big Fun (CD)
+        John Denver
+                Back Home Again (R)
+        The Dingoes
+                The Dingoes (R)
+        Julie Driscoll
+                Season Of The Witch (CD)
+        Bob Dylan
+                Before The Flood (R)
+                Before The Flood (CD)
+                Blood On The Tracks (CD)
+                Blood On The Tracks - New York Sessions (CD)
+                Planet Waves (CD)
+                Planet Waves (R)
+                St Valentines Day Massacre (R)
+        ...
+</div></code></pre>
+<p><strong>Note:</strong> I had a problem getting this code to work. I found out that once I had iterated through each artist I lost the records for that artist.</p>
+<p>I fixed the problem by creating a new cursor for that artist's records.</p>
+<pre class="hljs"><code><div>    <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists_in_year:
+        print(<span class="hljs-string">f"\t<span class="hljs-subst">{artist[<span class="hljs-string">'name'</span>]}</span>"</span>)
+
+        <span class="hljs-comment"># Create a new cursor for records by the year for each artist</span>
+        records_by_year = db[<span class="hljs-string">"records"</span>].find(
+            {<span class="hljs-string">"recorded"</span>: recorded_year, <span class="hljs-string">"artistid"</span>: artist[<span class="hljs-string">"artistid"</span>]}
+        )
+
+        <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> records_by_year:
+            print(<span class="hljs-string">f"\t\t<span class="hljs-subst">{record[<span class="hljs-string">'name'</span>]}</span> (<span class="hljs-subst">{record[<span class="hljs-string">'media'</span>]}</span>)"</span>)
+</div></code></pre>
+
+</body>
+</html>

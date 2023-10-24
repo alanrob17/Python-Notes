@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Using MongoDB with Python</title>
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="assets/css/starter-template.css" rel="stylesheet">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+<style type="text/css">
+html {
+	font-size: 90.0%;
+}
+
+h2 {
+	margin-top: 60px;
+}
+
+h4, h3 {
+	padding-top: 40px!;		
+}
+
+p {
+	font-size: 1.2em;
+}
+h4 {
+	font-size: 1.4em;
+}
+
+img, pre.prettyprint {
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+    color:#007bff;
+
+}
+blockquote {
+    border-left: 4px solid #999;
+    padding-left: 1rem;
+    page-break-inside: avoid;
+}
+</style>
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Python Notes</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Using MongoDB with Python <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <div class="starter-template">
+
+
+<h1 id="connecting-to-mongodb-using-python">Connecting to MongoDB using Python</h1>
+<h2 id="getting-started">Getting started</h2>
+<p>Install the driver for MongoDB</p>
+<pre class="prettyprint"><code><div>    pip install pymongo
+</div></code></pre>
+<p><strong>Important Note:</strong> I have had problems with this command. When I run a script with pymongo it gets an error.</p>
+<p>You can force an install with.</p>
+<pre class="prettyprint"><code><div>    python -m pip install pymongo
+</div></code></pre>
+<p>And this seems to fix the problem.</p>
+<p>Check with.</p>
+<pre class="prettyprint"><code><div>    pip list
+</div></code></pre>
+<p>Returns.</p>
+<blockquote>
+<p>pymongo 4.5.0</p>
+</blockquote>
+<p>Now, you can connect to a database with the following code.</p>
+<h2 id="creating-documents-in-mongodb">Creating documents in MongoDB</h2>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> pymongo
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">createMany</span><span class="hljs-params">(client, documents)</span>:</span>
+        db = client[<span class="hljs-string">"TestDB"</span>]
+        collection = db[<span class="hljs-string">"Test"</span>]
+        collection.insert_many(documents)
+
+    client = pymongo.MongoClient(<span class="hljs-string">"mongodb://localhost:27017"</span>)
+
+    documents = [
+        {<span class="hljs-string">"id"</span>: <span class="hljs-number">11</span>, <span class="hljs-string">"item"</span>: <span class="hljs-string">"Americanos"</span>, <span class="hljs-string">"size"</span>: <span class="hljs-string">"Short"</span>, <span class="hljs-string">"quantity"</span>: <span class="hljs-number">22</span>},
+        {<span class="hljs-string">"id"</span>: <span class="hljs-number">12</span>, <span class="hljs-string">"item"</span>: <span class="hljs-string">"Latte"</span>, <span class="hljs-string">"size"</span>: <span class="hljs-string">"Long"</span>, <span class="hljs-string">"quantity"</span>: <span class="hljs-number">12</span>},
+        {<span class="hljs-string">"id"</span>: <span class="hljs-number">13</span>, <span class="hljs-string">"item"</span>: <span class="hljs-string">"Cappuccino"</span>, <span class="hljs-string">"size"</span>: <span class="hljs-string">"Long"</span>, <span class="hljs-string">"quantity"</span>: <span class="hljs-number">42</span>},
+        {<span class="hljs-string">"id"</span>: <span class="hljs-number">14</span>, <span class="hljs-string">"item"</span>: <span class="hljs-string">"Mocha"</span>, <span class="hljs-string">"size"</span>: <span class="hljs-string">"Short"</span>, <span class="hljs-string">"quantity"</span>: <span class="hljs-number">25</span>},
+        {<span class="hljs-string">"id"</span>: <span class="hljs-number">15</span>, <span class="hljs-string">"item"</span>: <span class="hljs-string">"Americanos"</span>, <span class="hljs-string">"size"</span>: <span class="hljs-string">"Short"</span>, <span class="hljs-string">"quantity"</span>: <span class="hljs-number">34</span>},
+    ]
+
+    createMany(client, documents)
+</div></code></pre>
+<p>This code allows you to create a number of documents in the <code>Test</code> collection in the <strong>TestDB</strong> database.</p>
+<h2 id="reading-documents-in-mongodb">Reading documents in MongoDB</h2>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> pymongo
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">readDocuments</span><span class="hljs-params">(client, condition)</span>:</span>
+        db = client[<span class="hljs-string">"TestDB"</span>]
+        collection = db[<span class="hljs-string">"Test"</span>]
+        results = collection.find(condition)
+
+        <span class="hljs-keyword">for</span> row <span class="hljs-keyword">in</span> results:
+            print(row)
+
+    client = pymongo.MongoClient(<span class="hljs-string">"mongodb://localhost:27017"</span>)
+
+    condition = {<span class="hljs-string">"item"</span>: {<span class="hljs-string">"$eq"</span>: <span class="hljs-string">"Latte"</span>}}
+
+    readDocuments(client, condition)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>{'_id': ObjectId('653616265e54db92a3c68579'), 'id': 2, 'item': 'Latte', 'size': 'Short', 'quantity': 34}<br>
+{'_id': ObjectId('653616fb5e54db92a3c6857e'), 'id': 7, 'item': 'Latte', 'size': 'Short', 'quantity': 12}<br>
+{'_id': ObjectId('65361c9832fa9340e9e44153'), 'id': 12, 'item': 'Latte', 'size': 'Long', 'quantity': 12}<br>
+{'_id': ObjectId('65371907180d6d1178b96358'), 'id': 14, 'item': 'Latte', 'size': 'Long', 'quantity': 12}</p>
+</blockquote>
+<h2 id="update-documents-in-mongodb">Update documents in MongoDB</h2>
+<p>We want to change documents with item = <em>Americanos</em> to <em>Americano</em>.</p>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> pymongo
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">updateDoc</span><span class="hljs-params">(client, condition, operation)</span>:</span>
+        db = client[<span class="hljs-string">"TestDB"</span>]
+        collection = db[<span class="hljs-string">"Test"</span>]
+        results = collection.update_many(condition, operation)
+
+        print(results.modified_count)
+
+    client = pymongo.MongoClient(<span class="hljs-string">"mongodb://localhost:27017"</span>)
+
+    condition = {<span class="hljs-string">"item"</span>: {<span class="hljs-string">"$eq"</span>: <span class="hljs-string">"Americanos"</span>}}
+    operation = {<span class="hljs-string">"$set"</span>: {<span class="hljs-string">"item"</span>: <span class="hljs-string">"Americano"</span>}}
+
+    updateDoc(client, condition, operation)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>6</p>
+</blockquote>
+<p>Meaning 6 documents were modified.</p>
+<h2 id="deleting-documents-in-mongodb">Deleting documents in MongoDB</h2>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> pymongo
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deleteDocument</span><span class="hljs-params">(client, condition)</span>:</span>
+        db = client[<span class="hljs-string">"TestDB"</span>]
+        collection = db[<span class="hljs-string">"Test"</span>]
+        results = collection.delete_many(condition)
+
+        print(results.deleted_count)
+
+
+    client = pymongo.MongoClient(<span class="hljs-string">"mongodb://localhost:27017"</span>)
+
+    condition = {<span class="hljs-string">"id"</span>: {<span class="hljs-string">"$eq"</span>: <span class="hljs-number">15</span>}}
+
+    deleteDocument(client, condition)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>1</p>
+</blockquote>
+<p>Meaning one document was deleted.</p>
+<h2 id="querying-two-related-collections">Querying two related collections</h2>
+<p>I am querying the <strong>artists</strong> collection to find the <strong>artistid</strong> and then querying the <strong>records</strong> collection to find all documents with that <code>artistid</code>.</p>
+<pre class="prettyprint"><code><div><span class="hljs-keyword">import</span> pymongo
+
+client = pymongo.MongoClient(<span class="hljs-string">"mongodb://localhost:27017"</span>)
+
+db = client[<span class="hljs-string">"record-db"</span>]
+
+artist_name = <span class="hljs-string">"Bob Dylan"</span>
+
+artist_document = db[<span class="hljs-string">"artists"</span>].find_one({<span class="hljs-string">"name"</span>: artist_name})
+
+<span class="hljs-keyword">if</span> artist_document:
+    artistid = artist_document[<span class="hljs-string">"artistid"</span>]
+<span class="hljs-keyword">else</span>:
+    print(<span class="hljs-string">f"Artist '<span class="hljs-subst">{artist_name}</span>' not found in the 'artists' collection."</span>)
+    artistid = <span class="hljs-literal">None</span>
+
+<span class="hljs-keyword">if</span> artistid <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+    records = (
+        db[<span class="hljs-string">"records"</span>]
+        .find({<span class="hljs-string">"artistid"</span>: artistid})
+        .sort([(<span class="hljs-string">"recorded"</span>, pymongo.DESCENDING)])
+    )
+
+    album_names = [
+        [record[<span class="hljs-string">"name"</span>], record[<span class="hljs-string">"recorded"</span>], record[<span class="hljs-string">"media"</span>]] <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> records
+    ]
+
+    <span class="hljs-keyword">if</span> album_names:
+        print(<span class="hljs-string">f"Albums by <span class="hljs-subst">{artist_name}</span>:"</span>)
+
+        <span class="hljs-keyword">for</span> album_name <span class="hljs-keyword">in</span> album_names:
+            <span class="hljs-keyword">if</span> album_name[<span class="hljs-number">2</span>] == <span class="hljs-string">"CD-Audio"</span>:
+                album_name[<span class="hljs-number">2</span>] = <span class="hljs-string">"CD"</span>
+            <span class="hljs-keyword">if</span> album_name[<span class="hljs-number">2</span>] == <span class="hljs-string">"Record"</span>:
+                album_name[<span class="hljs-number">2</span>] = <span class="hljs-string">"R"</span>
+
+            print(<span class="hljs-string">f"\t<span class="hljs-subst">{album_name[<span class="hljs-number">1</span>]}</span>: <span class="hljs-subst">{album_name[<span class="hljs-number">0</span>]}</span> (<span class="hljs-subst">{album_name[<span class="hljs-number">2</span>]}</span>)"</span>)
+    <span class="hljs-keyword">else</span>:
+        print(<span class="hljs-string">f"No albums found for <span class="hljs-subst">{artist_name}</span>."</span>)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>Albums by Bob Dylan:<br>
+2005: Modern Times (CD)<br>
+2001: Love And Theft (CD)<br>
+2001: The Essential Bob Dylan (CD)<br>
+1997: Time Out Of Mind (CD)<br>
+...</p>
+</blockquote>
+<h2 id="getting-albums-by-year-recorded">Getting albums by year recorded</h2>
+<p>This code will select all records for a particular year. It then gets a list of artists who released albums in that year.</p>
+<p>I iterate through each artist and then get a list of their albums to print out.</p>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> pymongo
+
+    client = pymongo.MongoClient(<span class="hljs-string">"mongodb://localhost:27017"</span>)
+
+    db = client[<span class="hljs-string">"record-db"</span>]
+
+    recorded_year = <span class="hljs-number">1974</span>
+
+    records_by_year = db[<span class="hljs-string">"records"</span>].find({<span class="hljs-string">"recorded"</span>: recorded_year})
+
+    artist_ids = list({record[<span class="hljs-string">"artistid"</span>] <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> records_by_year})
+
+    artists_in_year = db[<span class="hljs-string">"artists"</span>].find({<span class="hljs-string">"artistid"</span>: {<span class="hljs-string">"$in"</span>: artist_ids}})
+
+    artists_in_year = artists_in_year.sort(
+        [(<span class="hljs-string">"lastname"</span>, pymongo.ASCENDING), (<span class="hljs-string">"firstname"</span>, pymongo.ASCENDING)]
+    )
+
+    print(<span class="hljs-string">f"\nAlbums by year: <span class="hljs-subst">{recorded_year}</span>\n"</span>)
+
+    <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists_in_year:
+        print(<span class="hljs-string">f"\t<span class="hljs-subst">{artist[<span class="hljs-string">'name'</span>]}</span>"</span>)
+
+        <span class="hljs-comment"># Create a new cursor for records by the year for each artist</span>
+        records_by_year = db[<span class="hljs-string">"records"</span>].find(
+            {<span class="hljs-string">"recorded"</span>: recorded_year, <span class="hljs-string">"artistid"</span>: artist[<span class="hljs-string">"artistid"</span>]}
+        )
+
+        <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> records_by_year:
+            print(<span class="hljs-string">f"\t\t<span class="hljs-subst">{record[<span class="hljs-string">'name'</span>]}</span> (<span class="hljs-subst">{record[<span class="hljs-string">'media'</span>]}</span>)"</span>)
+
+    print()
+</div></code></pre>
+<p>Returns:</p>
+<pre class="prettyprint"><code><div>        ...
+        Ry Cooder
+                Paradise And Lunch (R)
+                Paradise And Lunch (CD)
+        Miles Davis
+                Big Fun (CD)
+        John Denver
+                Back Home Again (R)
+        The Dingoes
+                The Dingoes (R)
+        Julie Driscoll
+                Season Of The Witch (CD)
+        Bob Dylan
+                Before The Flood (R)
+                Before The Flood (CD)
+                Blood On The Tracks (CD)
+                Blood On The Tracks - New York Sessions (CD)
+                Planet Waves (CD)
+                Planet Waves (R)
+                St Valentines Day Massacre (R)
+        ...
+</div></code></pre>
+<p><strong>Note:</strong> I had a problem getting this code to work. I found out that once I had iterated through each artist I lost the records for that artist.</p>
+<p>I fixed the problem by creating a new cursor for that artist's records.</p>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists_in_year:
+        print(<span class="hljs-string">f"\t<span class="hljs-subst">{artist[<span class="hljs-string">'name'</span>]}</span>"</span>)
+
+        <span class="hljs-comment"># Create a new cursor for records by the year for each artist</span>
+        records_by_year = db[<span class="hljs-string">"records"</span>].find(
+            {<span class="hljs-string">"recorded"</span>: recorded_year, <span class="hljs-string">"artistid"</span>: artist[<span class="hljs-string">"artistid"</span>]}
+        )
+
+        <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> records_by_year:
+            print(<span class="hljs-string">f"\t\t<span class="hljs-subst">{record[<span class="hljs-string">'name'</span>]}</span> (<span class="hljs-subst">{record[<span class="hljs-string">'media'</span>]}</span>)"</span>)
+</div></code></pre>
+
+
+</div><!-- starter-template -->
+</div><!-- /.container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"/>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+</body>
+</html>
