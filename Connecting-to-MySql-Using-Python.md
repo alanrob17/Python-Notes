@@ -158,17 +158,6 @@ print(f"{cursor.rowcount} were inserted.")
 
 **Important:** all integers, decimals and datetime values are entered as strings. MySql will do the conversions provided that your data is in the correct format. Also note that the DateTime text is in the format, ``2003-03-03 12:00:00``.
 
-## Create a list of all Artists and their Records
-
-```python
-
-```
-
-Returns:
-
-```python
-```
-
 ## Search for an Artist
 
 ```python
@@ -241,3 +230,331 @@ Returns:
 > Id: 4: Greg Allman        
 > Id: 5: Amazing Rhythm Aces        
 > ...
+
+## Refactoring my code
+
+I am going to start refactoring my code to stop repeating database routines.
+
+I will create the following files.
+
+### configuration.py
+
+This file will have my connection details in it. This will minimise the number of times I have to repeat my connection strings. Now there will be only one place in my code that has usernames, passwords and the name of the database.
+
+```python
+def connect():
+    user = "username"
+    password = "password"
+    database = "RecordDB"
+    return user, password, database
+```
+
+This function creates an unnamed tuple. You can unpack the tuple to get the details.
+
+Now to connect to my database routines all I have to do is unpack the tuple.
+
+```python
+import mysql.connector
+import configuration as c
+
+db_user, db_password, db_database = c.connect() # unpack the tuple
+```
+
+The next set of files I'll create will be database layers. These will hold my MySql database functions.
+
+### album_db.py
+
+These are a couple of my functions.
+
+```python
+import mysql.connector
+import configuration as c
+
+
+db_user, db_password, db_database = c.connect()
+
+
+def get_all_artists():
+    db = mysql.connector.connect(
+        host="localhost", user=db_user, password=db_password, database=db_database
+    )
+
+    cursor = db.cursor()
+
+    sql = "SELECT ArtistId, FirstName, LastName, Name, Biography FROM Artist ORDER BY LastName, FirstName;"
+
+    cursor.execute(sql)
+
+    artists = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    return artists
+
+
+def get_artist(artist_name):
+    db = mysql.connector.connect(
+        host="localhost", user=db_user, password=db_password, database=db_database
+    )
+
+    cursor = db.cursor()
+
+    sql = f"SELECT ArtistId, Name, FirstName, LastName, Biography FROM Artist WHERE Name = '{artist_name}';"
+
+    cursor.execute(sql)
+
+    artist = cursor.fetchone()
+
+    return artist
+
+    cursor.close()
+    db.close()
+```
+
+For example, when you return ``artists`` in the first function they are returned a list of tuples, with each tuple representing one artist and containing the mentioned fields.
+
+To access these artist records you have to unpack them. E.g.
+
+```python
+    for artist in artists:
+        artist_id, first_name, last_name, name, biography = artist
+
+    ...
+```
+
+``artist`` in the second function is also a tuple and can be accessed by unpacking the tuple.
+
+```python
+artist = a.get_artist(name)
+
+if artist:
+    artist_id, artist_name, first_name, last_name, biography = artist  # Unpack the row
+
+...
+```
+
+### record_db.py
+
+Contains the record database calls.
+
+```python
+import mysql.connector
+import configuration as c
+
+db_user, db_password, db_database = c.connect()
+
+def get_full_records():
+    db = mysql.connector.connect(
+        host="localhost", user=db_user, password=db_password, database=db_database
+    )
+
+    cursor = db.cursor()
+
+    sql = "SELECT RecordId, ArtistId, Name, Field, Recorded, Label, Pressing, \
+            Rating, Discs, Media, Bought, Cost, Review \
+            FROM Record ORDER BY ArtistId, Recorded DESC;"
+
+    cursor.execute(sql)
+
+    records = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    return records
+```
+
+Once again ```records``` are a list of tuples and can be accessed by unpacking them.
+
+I can simplify my main python code by shifting the data functions into the following files.
+
+### artist_data.py
+
+```python
+    def get_artist_ids(records):
+        # Create a set to store distinct artist_ids
+        artist_ids = set()
+
+        for record in records:
+            artist_id, name, recorded, media = record
+            artist_ids.add(artist_id)
+
+        # Convert the set to a list if needed
+        artist_ids_list = list(artist_ids)
+
+        return artist_ids_list
+
+    def organize_records_by_artist(records):
+        artist_records = {}
+
+        for record in records:
+            artist_id, name, recorded, media = record
+
+            if artist_id not in artist_records:
+                artist_records[artist_id] = []
+
+            artist_records[artist_id].append((recorded, name, media))
+
+        return artist_records
+```
+
+I can call and retrieve these records using the following code.
+
+```python
+    artist_ids_list = ad.get_artist_ids(records)
+```
+
+This returns a list of ``id's``.
+
+**Note:** I could have left this list in a **set** and been able to retrieve the values just as easily. They were originally in a **set** because they were unique values.
+
+### record_data.py
+
+```
+    def filter_records_by_artist(records, artist_id):
+        filtered_records = [record for record in records if record[0] == artist_id]
+        sorted_records = sorted(filtered_records, key=lambda record: record[1])
+
+        return sorted_records
+```
+
+This function filters the ``records`` by artist_id to return a list of a particular artist's records. It also sorts the record names by alphabetical order. The function can be called with the following code.
+
+```python
+    filtered_records = rd.filter_records_by_artist(records, artist_id)
+
+            for record in filtered_records:
+                artist_id, name, recorded, media = record
+
+                print(f"\t{name} ({media})")
+```
+
+## Create a list of all Artists and their Records
+
+Uses the following modules.
+
+* Configuration.py
+* artist_db.py
+* artist_data.py
+* record_db.py
+
+```python
+    import artist_db as a
+    import artist_data as ad
+    import record_db as r
+
+    artists = a.get_all_artists()
+
+    records = r.get_records()
+
+
+    def print_artist_records():
+        artist_records = ad.organize_records_by_artist(records)
+
+        for artist in artists:
+            artist_id, first_name, last_name, artist_name, biography = artist
+
+            if artist_id in artist_records:
+                print(f"\n{artist_name}\n")
+
+                for recorded, name, media in artist_records[artist_id]:
+                    print(f"\t{recorded} - {name} ({media})")
+
+        print()
+
+
+    print_artist_records()
+```
+
+Returns:
+
+```python
+    ...
+    Duane Allman
+
+            1972 - Anthology (R)
+
+    Greg Allman
+
+            2011 - Low Country Blues (CD)
+            1973 - Laid Back (R)
+
+    The Allman Brothers Band
+
+            1979 - Enlightened Rogues (R)
+            1973 - Brothers And Sisters (R)
+            1973 - Brothers And Sisters (CD)
+            ...
+```
+
+### Print all albums for a particular year
+
+Uses the following modules.
+
+* Configuration.py
+* artist_db.py
+* artist_data.py
+* record_db.py
+* record_data.py
+
+```python
+    import artist_db as a
+    import artist_data as ad
+    import record_db as r
+    import record_data as rd
+
+    year = 1975
+
+    records = r.get_records_by_year(year)
+
+    if len(records) == 0:
+        print(f"No records found for {year}.")
+        exit()
+
+    artists = a.get_all_artists()
+
+    artist_ids_list = ad.get_artist_ids(records)
+
+    artists = [artist for artist in artists if artist[0] in artist_ids_list]
+
+
+    def print_records(artists, records):
+        print(f"\nAlbums recorded in {year}:")
+
+        for artist in artists:
+            artist_id, first_name, last_name, name, biography = artist
+
+            print(f"\n{name}\n")
+
+            filtered_records = rd.filter_records_by_artist(records, artist_id)
+
+            for record in filtered_records:
+                artist_id, name, recorded, media = record
+
+                print(f"\t{name} ({media})")
+
+        print()
+
+
+    print_records(artists, records)
+```
+
+Returns:
+
+```python
+    ...
+    Loggins And Messina
+
+            So Fine (R)
+
+    Ellen McIlwaine
+
+            The Real (R)
+
+    Joni Mitchell
+
+            The Hissing Of Summer Lawns (R)
+            The Hissing Of Summer Lawns (CD)
+    ...
+```

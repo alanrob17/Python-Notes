@@ -496,56 +496,344 @@ db.commit()
 print(<span class="hljs-string">f"<span class="hljs-subst">{cursor.rowcount}</span> were inserted."</span>)
 </div></code></pre>
 <p><strong>Important:</strong> all integers, decimals and datetime values are entered as strings. MySql will do the conversions provided that your data is in the correct format. Also note that the DateTime text is in the format, <code>2003-03-03 12:00:00</code>.</p>
-<h2 id="create-a-list-of-all-artists-and-their-records">Create a list of all Artists and their Records</h2>
-<pre class="hljs"><code><div>    <span class="hljs-keyword">from</span> pymongo <span class="hljs-keyword">import</span> MongoClient, ASCENDING
+<h2 id="search-for-an-artist">Search for an Artist</h2>
+<pre class="hljs"><code><div>    <span class="hljs-keyword">import</span> mysql.connector
 
-    <span class="hljs-string">"""
-    List all Artists and their Albums.
-    """</span>
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=<span class="hljs-string">"root"</span>, password=<span class="hljs-string">"london@1"</span>, database=<span class="hljs-string">"RecordDB"</span>
+    )
 
-    client = MongoClient(<span class="hljs-string">"mongodb://localhost:27017"</span>)
+    cursor = db.cursor()
 
-    db = client[<span class="hljs-string">"record-db"</span>]
+    artistname = <span class="hljs-string">"Bob Dylan"</span>
 
-    all_artists = db[<span class="hljs-string">"artists"</span>].find()
+    sql = <span class="hljs-string">f"SELECT ArtistId, Name, FirstName, LastName FROM Artist WHERE Name = '<span class="hljs-subst">{artistname}</span>';"</span>
 
-    all_artists = all_artists.sort([(<span class="hljs-string">"lastname"</span>, ASCENDING), (<span class="hljs-string">"firstname"</span>, ASCENDING)])
+    cursor.execute(sql)
 
-    print(<span class="hljs-string">f"\nAlbums"</span>)
+    artist = cursor.fetchone()
 
-    <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> all_artists:
-        print(<span class="hljs-string">f"\n\t<span class="hljs-subst">{artist[<span class="hljs-string">'name'</span>]}</span>"</span>)
+    <span class="hljs-keyword">if</span> artist:
+        artist_id, artist_name, first_name, last_name = artist  <span class="hljs-comment"># Unpack the row</span>
+        print(<span class="hljs-string">f"ArtistId: <span class="hljs-subst">{artist_id}</span>"</span>)
+        print(<span class="hljs-string">f"Artist name: <span class="hljs-subst">{artist_name}</span>"</span>)
+        print(<span class="hljs-string">f"First name: <span class="hljs-subst">{first_name}</span>"</span>)
+        print(<span class="hljs-string">f"Last name: <span class="hljs-subst">{last_name}</span>"</span>)
+    <span class="hljs-keyword">else</span>:
+        print(<span class="hljs-string">f"Artist '<span class="hljs-subst">{artistname}</span>' not found in the 'Artist' table."</span>)
 
-        <span class="hljs-comment"># Create a new cursor for records by the year for each artist</span>
-        all_records_by_artist = db[<span class="hljs-string">"records"</span>].find({<span class="hljs-string">"artistid"</span>: artist[<span class="hljs-string">"artistid"</span>]})
-
-        all_records_by_artist = all_records_by_artist.sort([(<span class="hljs-string">"recorded"</span>, ASCENDING)])
-
-        <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> all_records_by_artist:
-            print(<span class="hljs-string">f"\t\t<span class="hljs-subst">{record[<span class="hljs-string">'recorded'</span>]}</span> - <span class="hljs-subst">{record[<span class="hljs-string">'name'</span>]}</span> (<span class="hljs-subst">{record[<span class="hljs-string">'media'</span>]}</span>)"</span>)
-
-    print()
+    cursor.close()
+    db.close()
 </div></code></pre>
 <p>Returns:</p>
-<pre class="hljs"><code><div>Albums
+<blockquote>
+<p>ArtistId: 114<br>
+Artist name: Bob Dylan<br>
+First name: Bob<br>
+Last name: Dylan</p>
+</blockquote>
+<h2 id="create-a-list-of-all-artists">Create a list of all Artists</h2>
+<pre class="hljs"><code><div>    <span class="hljs-keyword">import</span> mysql.connector
 
-    Ryan Adams
-             <span class="hljs-number">2000</span> - Heartbreaker (CD)
-             <span class="hljs-number">2001</span> - Gold (CD)
-             <span class="hljs-number">2001</span> - New York, New York (EP) (CD)
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=<span class="hljs-string">"root"</span>, password=<span class="hljs-string">"london@1"</span>, database=<span class="hljs-string">"RecordDB"</span>
+    )
 
+    cursor = db.cursor()
+
+    sql = <span class="hljs-string">"SELECT ArtistId, FirstName, LastName,Name FROM Artist;"</span>
+
+    cursor.execute(sql)
+
+    artists = cursor.fetchall()
+
+    <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists:
+        artist_id, first_name, last_name, artist_name = artist  <span class="hljs-comment"># Unpack the row</span>
+        print(<span class="hljs-string">f"Id: <span class="hljs-subst">{artist_id}</span>: <span class="hljs-subst">{artist_name}</span>"</span>)
+
+    cursor.close()
+    db.close()
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>Id: 1: William Ackerman<br>
+Id: 2: The Allman Brothers Band<br>
+Id: 3: Duane Allman<br>
+Id: 4: Greg Allman<br>
+Id: 5: Amazing Rhythm Aces<br>
+...</p>
+</blockquote>
+<h2 id="refactoring-my-code">Refactoring my code</h2>
+<p>I am going to start refactoring my code to stop repeating database routines.</p>
+<p>I will create the following files.</p>
+<h3 id="configurationpy">configuration.py</h3>
+<p>This file will have my connection details in it. This will minimise the number of times I have to repeat my connection strings. Now there will be only one place in my code that has usernames, passwords and the name of the database.</p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">connect</span><span class="hljs-params">()</span>:</span>
+    user = <span class="hljs-string">"username"</span>
+    password = <span class="hljs-string">"password"</span>
+    database = <span class="hljs-string">"RecordDB"</span>
+    <span class="hljs-keyword">return</span> user, password, database
+</div></code></pre>
+<p>This function creates an unnamed tuple. You can unpack the tuple to get the details.</p>
+<p>Now to connect to my database routines all I have to do is unpack the tuple.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> mysql.connector
+<span class="hljs-keyword">import</span> configuration <span class="hljs-keyword">as</span> c
+
+db_user, db_password, db_database = c.connect() <span class="hljs-comment"># unpack the tuple</span>
+</div></code></pre>
+<p>The next set of files I'll create will be database layers. These will hold my MySql database functions.</p>
+<h3 id="albumdbpy">album_db.py</h3>
+<p>These are a couple of my functions.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> mysql.connector
+<span class="hljs-keyword">import</span> configuration <span class="hljs-keyword">as</span> c
+
+
+db_user, db_password, db_database = c.connect()
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_all_artists</span><span class="hljs-params">()</span>:</span>
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=db_user, password=db_password, database=db_database
+    )
+
+    cursor = db.cursor()
+
+    sql = <span class="hljs-string">"SELECT ArtistId, FirstName, LastName, Name, Biography FROM Artist ORDER BY LastName, FirstName;"</span>
+
+    cursor.execute(sql)
+
+    artists = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    <span class="hljs-keyword">return</span> artists
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_artist</span><span class="hljs-params">(artist_name)</span>:</span>
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=db_user, password=db_password, database=db_database
+    )
+
+    cursor = db.cursor()
+
+    sql = <span class="hljs-string">f"SELECT ArtistId, Name, FirstName, LastName, Biography FROM Artist WHERE Name = '<span class="hljs-subst">{artist_name}</span>';"</span>
+
+    cursor.execute(sql)
+
+    artist = cursor.fetchone()
+
+    <span class="hljs-keyword">return</span> artist
+
+    cursor.close()
+    db.close()
+</div></code></pre>
+<p>For example, when you return <code>artists</code> in the first function they are returned a list of tuples, with each tuple representing one artist and containing the mentioned fields.</p>
+<p>To access these artist records you have to unpack them. E.g.</p>
+<pre class="hljs"><code><div>    <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists:
+        artist_id, first_name, last_name, name, biography = artist
+
+    ...
+</div></code></pre>
+<p><code>artist</code> in the second function is also a tuple and can be accessed by unpacking the tuple.</p>
+<pre class="hljs"><code><div>artist = a.get_artist(name)
+
+<span class="hljs-keyword">if</span> artist:
+    artist_id, artist_name, first_name, last_name, biography = artist  <span class="hljs-comment"># Unpack the row</span>
+
+...
+</div></code></pre>
+<h3 id="recorddbpy">record_db.py</h3>
+<p>Contains the record database calls.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> mysql.connector
+<span class="hljs-keyword">import</span> configuration <span class="hljs-keyword">as</span> c
+
+db_user, db_password, db_database = c.connect()
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_full_records</span><span class="hljs-params">()</span>:</span>
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=db_user, password=db_password, database=db_database
+    )
+
+    cursor = db.cursor()
+
+    sql = <span class="hljs-string">"SELECT RecordId, ArtistId, Name, Field, Recorded, Label, Pressing, \
+            Rating, Discs, Media, Bought, Cost, Review \
+            FROM Record ORDER BY ArtistId, Recorded DESC;"</span>
+
+    cursor.execute(sql)
+
+    records = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    <span class="hljs-keyword">return</span> records
+</div></code></pre>
+<p>Once again <code>records</code> are a list of tuples and can be accessed by unpacking them.</p>
+<p>I can simplify my main python code by shifting the data functions into the following files.</p>
+<h3 id="artistdatapy">artist_data.py</h3>
+<pre class="hljs"><code><div>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_artist_ids</span><span class="hljs-params">(records)</span>:</span>
+        <span class="hljs-comment"># Create a set to store distinct artist_ids</span>
+        artist_ids = set()
+
+        <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> records:
+            artist_id, name, recorded, media = record
+            artist_ids.add(artist_id)
+
+        <span class="hljs-comment"># Convert the set to a list if needed</span>
+        artist_ids_list = list(artist_ids)
+
+        <span class="hljs-keyword">return</span> artist_ids_list
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">organize_records_by_artist</span><span class="hljs-params">(records)</span>:</span>
+        artist_records = {}
+
+        <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> records:
+            artist_id, name, recorded, media = record
+
+            <span class="hljs-keyword">if</span> artist_id <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> artist_records:
+                artist_records[artist_id] = []
+
+            artist_records[artist_id].append((recorded, name, media))
+
+        <span class="hljs-keyword">return</span> artist_records
+</div></code></pre>
+<p>I can call and retrieve these records using the following code.</p>
+<pre class="hljs"><code><div>    artist_ids_list = ad.get_artist_ids(records)
+</div></code></pre>
+<p>This returns a list of <code>id's</code>.</p>
+<p><strong>Note:</strong> I could have left this list in a <strong>set</strong> and been able to retrieve the values just as easily. They were originally in a <strong>set</strong> because they were unique values.</p>
+<h3 id="recorddatapy">record_data.py</h3>
+<pre class="hljs"><code><div>    def filter_records_by_artist(records, artist_id):
+        filtered_records = [record for record in records if record[0] == artist_id]
+        sorted_records = sorted(filtered_records, key=lambda record: record[1])
+
+        return sorted_records
+</div></code></pre>
+<p>This function filters the <code>records</code> by artist_id to return a list of a particular artist's records. It also sorts the record names by alphabetical order. The function can be called with the following code.</p>
+<pre class="hljs"><code><div>    filtered_records = rd.filter_records_by_artist(records, artist_id)
+
+            <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> filtered_records:
+                artist_id, name, recorded, media = record
+
+                print(<span class="hljs-string">f"\t<span class="hljs-subst">{name}</span> (<span class="hljs-subst">{media}</span>)"</span>)
+</div></code></pre>
+<h2 id="create-a-list-of-all-artists-and-their-records">Create a list of all Artists and their Records</h2>
+<p>Uses the following modules.</p>
+<ul>
+<li>Configuration.py</li>
+<li>artist_db.py</li>
+<li>artist_data.py</li>
+<li>record_db.py</li>
+</ul>
+<pre class="hljs"><code><div>    <span class="hljs-keyword">import</span> artist_db <span class="hljs-keyword">as</span> a
+    <span class="hljs-keyword">import</span> artist_data <span class="hljs-keyword">as</span> ad
+    <span class="hljs-keyword">import</span> record_db <span class="hljs-keyword">as</span> r
+
+    artists = a.get_all_artists()
+
+    records = r.get_records()
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_artist_records</span><span class="hljs-params">()</span>:</span>
+        artist_records = ad.organize_records_by_artist(records)
+
+        <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists:
+            artist_id, first_name, last_name, artist_name, biography = artist
+
+            <span class="hljs-keyword">if</span> artist_id <span class="hljs-keyword">in</span> artist_records:
+                print(<span class="hljs-string">f"\n<span class="hljs-subst">{artist_name}</span>\n"</span>)
+
+                <span class="hljs-keyword">for</span> recorded, name, media <span class="hljs-keyword">in</span> artist_records[artist_id]:
+                    print(<span class="hljs-string">f"\t<span class="hljs-subst">{recorded}</span> - <span class="hljs-subst">{name}</span> (<span class="hljs-subst">{media}</span>)"</span>)
+
+        print()
+
+
+    print_artist_records()
+</div></code></pre>
+<p>Returns:</p>
+<pre class="hljs"><code><div>    ...
     Duane Allman
-             <span class="hljs-number">1972</span> - Anthology (R)
+
+            <span class="hljs-number">1972</span> - Anthology (R)
 
     Greg Allman
-             <span class="hljs-number">1973</span> - Laid Back (R)
-             <span class="hljs-number">2011</span> - Low Country Blues (CD)
+
+            <span class="hljs-number">2011</span> - Low Country Blues (CD)
+            <span class="hljs-number">1973</span> - Laid Back (R)
 
     The Allman Brothers Band
-             <span class="hljs-number">1969</span> - The Allman Brothers Band (R)
-             <span class="hljs-number">1970</span> - Live At Ludlow Garage <span class="hljs-number">1970</span> (CD)
-             <span class="hljs-number">1971</span> - At The Fillmore East (R)
-             <span class="hljs-number">1971</span> - The Fillmore Concerts (CD)
+
+            <span class="hljs-number">1979</span> - Enlightened Rogues (R)
+            <span class="hljs-number">1973</span> - Brothers And Sisters (R)
+            <span class="hljs-number">1973</span> - Brothers And Sisters (CD)
+            ...
+</div></code></pre>
+<h3 id="print-all-albums-for-a-particular-year">Print all albums for a particular year</h3>
+<p>Uses the following modules.</p>
+<ul>
+<li>Configuration.py</li>
+<li>artist_db.py</li>
+<li>artist_data.py</li>
+<li>record_db.py</li>
+<li>record_data.py</li>
+</ul>
+<pre class="hljs"><code><div>    <span class="hljs-keyword">import</span> artist_db <span class="hljs-keyword">as</span> a
+    <span class="hljs-keyword">import</span> artist_data <span class="hljs-keyword">as</span> ad
+    <span class="hljs-keyword">import</span> record_db <span class="hljs-keyword">as</span> r
+    <span class="hljs-keyword">import</span> record_data <span class="hljs-keyword">as</span> rd
+
+    year = <span class="hljs-number">1975</span>
+
+    records = r.get_records_by_year(year)
+
+    <span class="hljs-keyword">if</span> len(records) == <span class="hljs-number">0</span>:
+        print(<span class="hljs-string">f"No records found for <span class="hljs-subst">{year}</span>."</span>)
+        exit()
+
+    artists = a.get_all_artists()
+
+    artist_ids_list = ad.get_artist_ids(records)
+
+    artists = [artist <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists <span class="hljs-keyword">if</span> artist[<span class="hljs-number">0</span>] <span class="hljs-keyword">in</span> artist_ids_list]
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_records</span><span class="hljs-params">(artists, records)</span>:</span>
+        print(<span class="hljs-string">f"\nAlbums recorded in <span class="hljs-subst">{year}</span>:"</span>)
+
+        <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists:
+            artist_id, first_name, last_name, name, biography = artist
+
+            print(<span class="hljs-string">f"\n<span class="hljs-subst">{name}</span>\n"</span>)
+
+            filtered_records = rd.filter_records_by_artist(records, artist_id)
+
+            <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> filtered_records:
+                artist_id, name, recorded, media = record
+
+                print(<span class="hljs-string">f"\t<span class="hljs-subst">{name}</span> (<span class="hljs-subst">{media}</span>)"</span>)
+
+        print()
+
+
+    print_records(artists, records)
+</div></code></pre>
+<p>Returns:</p>
+<pre class="hljs"><code><div>    ...
+    Loggins And Messina
+
+            So Fine (R)
+
+    Ellen McIlwaine
+
+            The Real (R)
+
+    Joni Mitchell
+
+            The Hissing Of Summer Lawns (R)
+            The Hissing Of Summer Lawns (CD)
     ...
 </div></code></pre>
 
