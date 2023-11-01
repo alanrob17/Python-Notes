@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Python Lists</title>
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="assets/css/starter-template.css" rel="stylesheet">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+<style type="text/css">
+html {
+	font-size: 90.0%;
+}
+
+h2 {
+	margin-top: 60px;
+}
+
+h4, h3 {
+	padding-top: 40px!;		
+}
+
+p {
+	font-size: 1.2em;
+}
+h4 {
+	font-size: 1.4em;
+}
+
+img, pre.prettyprint {
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+    color:#007bff;
+
+}
+blockquote {
+    border-left: 4px solid #999;
+    padding-left: 1rem;
+    page-break-inside: avoid;
+}
+</style>
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Learning Python</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Python Lists <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <div class="starter-template">
+
+
+<h1 id="python-lists">Python Lists</h1>
+<h2 id="list">List</h2>
+<p>Lists are used to store multiple items in a single variable.</p>
+<p>Lists are one of 4 built-in data types in Python used to store collections of data, the other 3 are Tuple, Set, and Dictionary, all with different qualities and usage.</p>
+<p>Lists are created using square brackets:</p>
+<pre class="prettyprint"><code><div>    mylist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+</div></code></pre>
+<h2 id="list-items">List Items</h2>
+<p>List items are ordered, changeable, and allow duplicate values.</p>
+<p>List items are indexed, the first item has index [0], the second item has index [1] etc.</p>
+<h3 id="ordered">Ordered</h3>
+<p>When we say that lists are ordered, it means that the items have a defined order, and that order will not change.</p>
+<p>If you add new items to a list, the new items will be placed at the end of the list.</p>
+<p><strong>Note:</strong> There are some list methods that will change the order, but in general: the order of the items will not change.</p>
+<h3 id="changeable">Changeable</h3>
+<p>The list is changeable, meaning that we can change, add, and remove items in a list after it has been created.</p>
+<h3 id="allow-duplicates">Allow Duplicates</h3>
+<p>Since lists are indexed, lists can have items with the same value:</p>
+<pre class="prettyprint"><code><div>    mylist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+
+    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> mylist:
+        print(item)
+</div></code></pre>
+<p>Result:</p>
+<blockquote>
+<p>apple<br>
+banana<br>
+cherry<br>
+apple<br>
+banana<br>
+cherry</p>
+</blockquote>
+<p>The output shows that the order doesn't change. The items are in the order that they were entered.</p>
+<h2 id="list-length">List Length</h2>
+<p>To determine how many items a list has, use the <code>len()</code> function:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    print(len(thislist))
+</div></code></pre>
+<blockquote>
+<p>3</p>
+</blockquote>
+<h2 id="list-items---data-types">List Items - Data Types</h2>
+<p>List items can be of any data type:</p>
+<pre class="prettyprint"><code><div>    list1 = [<span class="hljs-string">"abc"</span>, <span class="hljs-number">34</span>, <span class="hljs-literal">True</span>, <span class="hljs-number">40</span>, <span class="hljs-string">"male"</span>]
+</div></code></pre>
+<h2 id="type">type()</h2>
+<p>From Python's perspective, lists are defined as objects with the data type 'list':</p>
+<pre class="prettyprint"><code><div>    mylist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    print(type(mylist))
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>&lt;class 'list'&gt;</p>
+</blockquote>
+<h2 id="the-list-constructor">The list() Constructor</h2>
+<p>It is also possible to use the <code>list()</code> constructor when creating a new list.</p>
+<pre class="prettyprint"><code><div>    thislist = list((<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)) <span class="hljs-comment"># note the double round-brackets</span>
+    print(thislist)
+</div></code></pre>
+<h2 id="python-collections-arrays">Python Collections (Arrays)</h2>
+<p>There are four collection data types in the Python programming language:</p>
+<ul>
+<li><code>List</code> is a collection which is ordered and changeable. Allows duplicate members.</li>
+<li><code>Tuple</code> is a collection which is ordered and unchangeable. Allows duplicate members.</li>
+<li><code>Set</code> is a collection which is unordered, unchangeable, and unindexed. No duplicate members.</li>
+<li><code>Dictionary</code> is a collection which is ordered and changeable. No duplicate members.</li>
+</ul>
+<p><strong>Set</strong> items are unchangeable, but you can remove and/or add items whenever you like.</p>
+<p>As of Python version 3.7, dictionaries are ordered.</p>
+<p>When choosing a collection type, it is useful to understand the properties of that type. Choosing the right type for a particular data set could mean retention of meaning, and, it could mean an increase in efficiency or security.</p>
+<h2 id="access-items">Access Items</h2>
+<p>List items are indexed and you can access them by referring to the index number:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    print(thislist[<span class="hljs-number">1</span>])
+</div></code></pre>
+<blockquote>
+<p>banana</p>
+</blockquote>
+<p><strong>Note:</strong> The first item has index 0.</p>
+<h2 id="negative-indexing">Negative Indexing</h2>
+<p>Negative indexing means start from the end</p>
+<p>-1 refers to the last item, -2 refers to the second last item etc.</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    print(thislist[<span class="hljs-number">-1</span>])
+</div></code></pre>
+<blockquote>
+<p>cherry</p>
+</blockquote>
+<h2 id="range-of-indexes">Range of Indexes</h2>
+<p>You can specify a range of indexes by specifying where to start and where to end the range.</p>
+<p>When specifying a range, the return value will be a new list with the specified items.</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"orange"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"melon"</span>, <span class="hljs-string">"mango"</span>]
+
+    print(thislist[<span class="hljs-number">2</span>:<span class="hljs-number">5</span>])
+
+    newlist = thislist[<span class="hljs-number">1</span>:<span class="hljs-number">5</span>]
+
+    print(newlist)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>['cherry', 'orange', 'kiwi']<br>
+['banana', 'cherry', 'orange', 'kiwi']</p>
+</blockquote>
+<p>By leaving out the start value, the range will start at the first item:</p>
+<blockquote>
+<p>['apple', 'banana', 'cherry', 'orange']</p>
+</blockquote>
+<p>By leaving out the end value, the range will go on to the end of the list:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"orange"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"melon"</span>, <span class="hljs-string">"mango"</span>]
+    print(thislist[<span class="hljs-number">2</span>:])
+</div></code></pre>
+<blockquote>
+<p>['cherry', 'orange', 'kiwi', 'melon', 'mango']</p>
+</blockquote>
+<h2 id="check-if-item-exists">Check if Item Exists</h2>
+<p>To determine if a specified item is present in a list use the in keyword:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+
+    <span class="hljs-keyword">if</span> <span class="hljs-string">"apple"</span> <span class="hljs-keyword">in</span> thislist:
+        print(<span class="hljs-string">"Yes, 'apple' is in the fruits list"</span>)
+</div></code></pre>
+<blockquote>
+<p>Yes, 'apple' is in the fruits list</p>
+</blockquote>
+<h2 id="change-item-value">Change Item Value</h2>
+<p>To change the value of a specific item, refer to the index number:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    thislist[<span class="hljs-number">1</span>] = <span class="hljs-string">"blackcurrant"</span>
+    
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'blackcurrant', 'cherry']</p>
+</blockquote>
+<h2 id="change-a-range-of-item-values">Change a Range of Item Values</h2>
+<p>To change the value of items within a specific range, define a list with the new values, and refer to the range of index numbers where you want to insert the new values:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"orange"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"mango"</span>]
+    thislist[<span class="hljs-number">1</span>:<span class="hljs-number">3</span>] = [<span class="hljs-string">"blackcurrant"</span>, <span class="hljs-string">"watermelon"</span>]
+
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'blackcurrant', 'watermelon', 'orange', 'kiwi', 'mango']</p>
+</blockquote>
+<h2 id="insert-items">Insert Items</h2>
+<p>To insert a new list item, without replacing any of the existing values, we can use the <code>insert()</code> method.</p>
+<p>The <code>insert()</code> method inserts an item at the specified index:</p>
+<pre class="prettyprint"><code><div>thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+thislist.insert(<span class="hljs-number">2</span>, <span class="hljs-string">"watermelon"</span>)
+print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'banana', 'watermelon', 'cherry']</p>
+</blockquote>
+<h2 id="add-list-items">Add List Items</h2>
+<h3 id="append-items">Append Items</h3>
+<p>To add an item to the end of the list, use the append() method:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    thislist.append(<span class="hljs-string">"orange"</span>)
+
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'banana', 'cherry', 'orange']</p>
+</blockquote>
+<h3 id="insert-items">Insert Items</h3>
+<p>To insert a list item at a specified index, use the insert() method.</p>
+<p>The <code>insert()</code> method inserts an item at the specified index:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    thislist.insert(<span class="hljs-number">1</span>, <span class="hljs-string">"orange"</span>)
+    
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'orange', 'banana', 'cherry']</p>
+</blockquote>
+<h2 id="extend-list">Extend List</h2>
+<p>To append elements from another list to the current list, use the <code>extend()</code> method.</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    tropical = [<span class="hljs-string">"mango"</span>, <span class="hljs-string">"pineapple"</span>, <span class="hljs-string">"papaya"</span>]
+    thislist.extend(tropical)
+
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'banana', 'cherry', 'mango', 'pineapple', 'papaya']</p>
+</blockquote>
+<h3 id="add-any-iterable">Add Any Iterable</h3>
+<p>The <code>extend()</code> method does not have to append lists, you can add any iterable object (tuples, sets, dictionaries etc.).</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    thistuple = (<span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"orange"</span>)
+    thislist.extend(thistuple)
+
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'banana', 'cherry', 'kiwi', 'orange']</p>
+</blockquote>
+<h2 id="remove-list-items">Remove List Items</h2>
+<h3 id="remove-specified-item">Remove Specified Item</h3>
+<p>The <code>remove()</code> method removes the specified item.</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    thislist.remove(<span class="hljs-string">"banana"</span>)
+    
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'cherry']</p>
+</blockquote>
+<p>If there are more than one item with the specified value, the remove() method removes the first occurance:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"kiwi"</span>]
+    thislist.remove(<span class="hljs-string">"banana"</span>)
+
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'cherry', 'banana', 'kiwi']</p>
+</blockquote>
+<h3 id="remove-specified-index">Remove Specified Index</h3>
+<p>The <code>pop()</code> method removes the specified index.</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    thislist.pop(<span class="hljs-number">1</span>)
+
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'cherry']</p>
+</blockquote>
+<p>If you do not specify the index, the <code>pop()</code> method removes the last item.</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    thislist.pop()
+
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'banana']</p>
+</blockquote>
+<p>The <strong>del</strong> keyword also removes the specified index:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    <span class="hljs-keyword">del</span> thislist[<span class="hljs-number">0</span>]
+
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['banana', 'cherry']</p>
+</blockquote>
+<p>The <strong>del</strong> keyword can also delete the list completely.</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    <span class="hljs-keyword">del</span> thislist
+</div></code></pre>
+<h3 id="clear-the-list">Clear the List</h3>
+<p>The <code>clear()</code> method empties the list.</p>
+<p>The list still remains, but it has no content.</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    thislist.clear()
+    
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>[]</p>
+</blockquote>
+<h2 id="loop-through-lists">Loop through Lists</h2>
+<h3 id="loop-lists">Loop Lists</h3>
+<p>You can loop through the list items by using a for loop:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    
+    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> thislist:
+      print(x)
+</div></code></pre>
+<blockquote>
+<p>apple<br>
+banana<br>
+cherry</p>
+</blockquote>
+<h3 id="loop-through-the-index-numbers">Loop Through the Index Numbers</h3>
+<p>You can also loop through the list items by referring to their index number.</p>
+<p>Use the <code>range()</code> and <code>len()</code> functions to create a suitable iterable.</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(thislist)):
+      print(thislist[i])
+</div></code></pre>
+<blockquote>
+<p>apple<br>
+banana<br>
+cherry</p>
+</blockquote>
+<h3 id="using-a-while-loop">Using a While Loop</h3>
+<p>You can loop through the list items by using a while loop.</p>
+<p>Use the <code>len()</code> function to determine the length of the list, then start at 0 and loop your way through the list items by referring to their indexes.</p>
+<p>Remember to increase the index by 1 after each iteration.</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    i = <span class="hljs-number">0</span>
+    
+    <span class="hljs-keyword">while</span> i &lt; len(thislist):
+      print(thislist[i])
+      i = i + <span class="hljs-number">1</span>
+</div></code></pre>
+<blockquote>
+<p>apple<br>
+banana<br>
+cherry</p>
+</blockquote>
+<h3 id="looping-using-list-comprehension">Looping Using List Comprehension</h3>
+<p>List Comprehension offers the shortest syntax for looping through lists:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+
+    [print(x) <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> thislist]
+</div></code></pre>
+<blockquote>
+<p>apple<br>
+banana<br>
+cherry</p>
+</blockquote>
+<h2 id="list-comprehension">List Comprehension</h2>
+<p>List comprehension offers a shorter syntax when you want to create a new list based on the values of an existing list.</p>
+<p>Based on a list of fruits, you want a new list, containing only the fruits with the letter &quot;a&quot; in the name.</p>
+<p>Without list comprehension you will have to write a <code>for</code> statement with a conditional test inside:</p>
+<pre class="prettyprint"><code><div>    fruits = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"mango"</span>]
+    newlist = []
+
+    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> fruits:
+      <span class="hljs-keyword">if</span> <span class="hljs-string">"a"</span> <span class="hljs-keyword">in</span> x:
+        newlist.append(x)
+
+    print(newlist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'banana', 'mango']</p>
+</blockquote>
+<p>With list comprehension you can do all that with only one line of code:</p>
+<pre class="prettyprint"><code><div>    fruits = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"mango"</span>]
+    
+    newlist = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> fruits <span class="hljs-keyword">if</span> <span class="hljs-string">"a"</span> <span class="hljs-keyword">in</span> x]
+
+    print(newlist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'banana', 'mango']</p>
+</blockquote>
+<h3 id="the-syntax">The Syntax</h3>
+<p>newlist = [expression for item in iterable if condition == True]</p>
+<p>The return value is a new list, leaving the old list unchanged.</p>
+<h4 id="condition">Condition</h4>
+<p>The <code>condition</code> is like a filter that only accepts the items that valuate to True.</p>
+<pre class="prettyprint"><code><div>    fruits = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"mango"</span>]
+    
+    newlist = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> fruits <span class="hljs-keyword">if</span> x != <span class="hljs-string">"apple"</span>]
+
+    print(newlist)
+</div></code></pre>
+<blockquote>
+<p>['banana', 'cherry', 'kiwi', 'mango']</p>
+</blockquote>
+<p>The condition if <strong>x != &quot;apple&quot;</strong>  will return True for all elements other than &quot;apple&quot;, making the new list contain all fruits except &quot;apple&quot;.</p>
+<p>The condition is optional and can be omitted:</p>
+<pre class="prettyprint"><code><div>    fruits = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"mango"</span>]
+    
+    newlist = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> fruits]
+
+    print(newlist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'banana', 'cherry', 'kiwi', 'mango']</p>
+</blockquote>
+<h3 id="expression">Expression</h3>
+<p>The expression is the current item in the iteration, but it is also the outcome, which you can manipulate before it ends up like a list item in the new list:</p>
+<p>Set the values in the new list to upper case:</p>
+<pre class="prettyprint"><code><div>    fruits = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"mango"</span>]
+    
+    newlist = [x.upper() <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> fruits]
+
+    print(newlist)
+</div></code></pre>
+<blockquote>
+<p>['APPLE', 'BANANA', 'CHERRY', 'KIWI', 'MANGO']</p>
+</blockquote>
+<p>You can set the outcome to whatever you like:</p>
+<pre class="prettyprint"><code><div>    fruits = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"mango"</span>]
+    
+    newlist = newlist = [<span class="hljs-string">'hello'</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> fruits]
+
+    print(newlist)
+</div></code></pre>
+<blockquote>
+<p>['hello', 'hello', 'hello', 'hello', 'hello']</p>
+</blockquote>
+<p>The expression can also contain conditions, not like a filter, but as a way to manipulate the outcome:</p>
+<pre class="prettyprint"><code><div>    fruits = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"mango"</span>]
+    
+    newlist = [x <span class="hljs-keyword">if</span> x != <span class="hljs-string">"banana"</span> <span class="hljs-keyword">else</span> <span class="hljs-string">"orange"</span> <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> fruits]
+
+    print(newlist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'orange', 'cherry', 'kiwi', 'mango']</p>
+</blockquote>
+<h2 id="sort-lists">Sort Lists</h2>
+<h3 id="sort-list-alphanumerically">Sort List Alphanumerically</h3>
+<p>List objects have a <code>sort()</code> method that will sort the list alphanumerically, ascending, by default:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"orange"</span>, <span class="hljs-string">"mango"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"pineapple"</span>, <span class="hljs-string">"banana"</span>]
+    thislist.sort()
+
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['banana', 'kiwi', 'mango', 'orange', 'pineapple']</p>
+</blockquote>
+<p>Sort the list numerically:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-number">100</span>, <span class="hljs-number">50</span>, <span class="hljs-number">65</span>, <span class="hljs-number">82</span>, <span class="hljs-number">23</span>]
+    thislist.sort()
+    
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>[23, 50, 65, 82, 100]</p>
+</blockquote>
+<h3 id="sort-descending">Sort Descending</h3>
+<p>To sort descending, use the keyword argument <code>reverse = True</code>:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"orange"</span>, <span class="hljs-string">"mango"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"pineapple"</span>, <span class="hljs-string">"banana"</span>]
+    thislist.sort(reverse = <span class="hljs-literal">True</span>)
+
+    print(thislist)
+
+    thislist = [<span class="hljs-number">100</span>, <span class="hljs-number">50</span>, <span class="hljs-number">65</span>, <span class="hljs-number">82</span>, <span class="hljs-number">23</span>]
+    thislist.sort(reverse = <span class="hljs-literal">True</span>)
+
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['pineapple', 'orange', 'mango', 'kiwi', 'banana']<br>
+[100, 82, 65, 50, 23]</p>
+</blockquote>
+<p>Sort the list based on how close the number is to 50:</p>
+<pre class="prettyprint"><code><div>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">myfunc</span><span class="hljs-params">(n)</span>:</span>
+      <span class="hljs-keyword">return</span> abs(n - <span class="hljs-number">50</span>)
+
+    thislist = [<span class="hljs-number">100</span>, <span class="hljs-number">50</span>, <span class="hljs-number">65</span>, <span class="hljs-number">82</span>, <span class="hljs-number">23</span>]
+    thislist.sort(key = myfunc)
+    
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>[50, 65, 23, 82, 100]</p>
+</blockquote>
+<h3 id="case-insensitive-sort">Case Insensitive Sort</h3>
+<p>By default the <code>sort()</code> method is case sensitive, resulting in all capital letters being sorted before lower case letters:</p>
+<p>Produces unexpected results.</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"banana"</span>, <span class="hljs-string">"Orange"</span>, <span class="hljs-string">"Kiwi"</span>, <span class="hljs-string">"cherry"</span>]
+    thislist.sort()
+
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['Kiwi', 'Orange', 'banana', 'cherry']</p>
+</blockquote>
+<p>Luckily we can use built-in functions as key functions when sorting a list.</p>
+<p>So if you want a case-insensitive sort function, use str.lower as a key function:</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"banana"</span>, <span class="hljs-string">"Orange"</span>, <span class="hljs-string">"Kiwi"</span>, <span class="hljs-string">"cherry"</span>]
+    thislist.sort(key = str.lower)
+
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['banana', 'cherry', 'Kiwi', 'Orange']</p>
+</blockquote>
+<h3 id="reverse-order">Reverse Order</h3>
+<p>What if you want to reverse the order of a list, regardless of the alphabet?</p>
+<p>The <code>reverse()</code> method reverses the current sorting order of the elements.</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"banana"</span>, <span class="hljs-string">"Orange"</span>, <span class="hljs-string">"Kiwi"</span>, <span class="hljs-string">"cherry"</span>]
+    thislist.reverse()
+
+    print(thislist)
+
+    thislist = [<span class="hljs-number">100</span>, <span class="hljs-number">50</span>, <span class="hljs-number">65</span>, <span class="hljs-number">82</span>, <span class="hljs-number">23</span>]
+    thislist.reverse()
+
+    print(thislist)
+</div></code></pre>
+<blockquote>
+<p>['cherry', 'Kiwi', 'Orange', 'banana']<br>
+[23, 82, 65, 50, 100]</p>
+</blockquote>
+<h2 id="copy-lists">Copy Lists</h2>
+<h2 id="copy-a-list">Copy a List</h2>
+<p>You cannot copy a list simply by typing list2 = list1, because: list2 will only be a reference to list1, and changes made in list1 will automatically also be made in list2.</p>
+<p>There are ways to make a copy, one way is to use the built-in List method <code>copy()</code>.</p>
+<pre class="prettyprint"><code><div>    thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+    mylist = thislist.copy()
+
+    print(mylist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'banana', 'cherry']</p>
+</blockquote>
+<p>Another way to make a copy is to use the built-in method <code>list()</code>.</p>
+<pre class="prettyprint"><code><div>thislist = [<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>]
+mylist = list(thislist)
+
+print(mylist)
+</div></code></pre>
+<blockquote>
+<p>['apple', 'banana', 'cherry']</p>
+</blockquote>
+<h2 id="join-lists">Join Lists</h2>
+<p>There are several ways to join, or concatenate, two or more lists in Python.</p>
+<p>One of the easiest ways are by using the + operator.</p>
+<pre class="prettyprint"><code><div>    list1 = [<span class="hljs-string">"a"</span>, <span class="hljs-string">"b"</span>, <span class="hljs-string">"c"</span>]
+    list2 = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+
+    list3 = list1 + list2
+    print(list3)
+</div></code></pre>
+<blockquote>
+<p>['a', 'b', 'c', 1, 2, 3]</p>
+</blockquote>
+<p>Another way to join two lists is by appending all the items from list2 into list1, one by one:</p>
+<pre class="prettyprint"><code><div>    list1 = [<span class="hljs-string">"a"</span>, <span class="hljs-string">"b"</span> , <span class="hljs-string">"c"</span>]
+    list2 = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+
+    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> list2:
+      list1.append(x)
+
+    print(list1)
+</div></code></pre>
+<blockquote>
+<p>['a', 'b', 'c', 1, 2, 3]</p>
+</blockquote>
+<p>Or you can use the <code>extend()</code> method, where the purpose is to add elements from one list to another list:</p>
+<pre class="prettyprint"><code><div>    list1 = [<span class="hljs-string">"a"</span>, <span class="hljs-string">"b"</span> , <span class="hljs-string">"c"</span>]
+    list2 = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+
+    list1.extend(list2)
+    print(list1)
+</div></code></pre>
+<blockquote>
+<p>['a', 'b', 'c', 1, 2, 3]</p>
+</blockquote>
+<h2 id="list-methods">List Methods</h2>
+<p>Python has a set of built-in methods that you can use on lists.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>append()</td>
+<td>Adds an element at the end of the list</td>
+</tr>
+<tr>
+<td>clear()</td>
+<td>Removes all the elements from the list</td>
+</tr>
+<tr>
+<td>copy()</td>
+<td>Returns a copy of the list</td>
+</tr>
+<tr>
+<td>count()</td>
+<td>Returns the number of elements with the specified value</td>
+</tr>
+<tr>
+<td>extend()</td>
+<td>Add the elements of a list (or any iterable), to the end of the current list</td>
+</tr>
+<tr>
+<td>index()</td>
+<td>Returns the index of the first element with the specified value</td>
+</tr>
+<tr>
+<td>insert()</td>
+<td>Adds an element at the specified position</td>
+</tr>
+<tr>
+<td>pop()</td>
+<td>Removes the element at the specified position</td>
+</tr>
+<tr>
+<td>remove()</td>
+<td>Removes the item with the specified value</td>
+</tr>
+<tr>
+<td>reverse()</td>
+<td>Reverses the order of the list</td>
+</tr>
+<tr>
+<td>sort()</td>
+<td>Sorts the list</td>
+</tr>
+</tbody>
+</table>
+
+
+
+</div><!-- starter-template -->
+</div><!-- /.container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"/>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+</body>
+</html>
