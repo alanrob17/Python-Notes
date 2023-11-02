@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Python Tuples</title>
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="assets/css/starter-template.css" rel="stylesheet">
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+<style type="text/css">
+html {
+	font-size: 90.0%;
+}
+
+h2 {
+	margin-top: 60px;
+}
+
+h4, h3 {
+	padding-top: 40px!;		
+}
+
+p {
+	font-size: 1.2em;
+}
+h4 {
+	font-size: 1.4em;
+}
+
+img, pre.prettyprint {
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+    color:#007bff;
+
+}
+blockquote {
+    border-left: 4px solid #999;
+    padding-left: 1rem;
+    page-break-inside: avoid;
+}
+</style>
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Learning Python</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Python Tuples <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <div class="starter-template">
+
+
+<h1 id="python-tuples">Python Tuples</h1>
+<pre class="prettyprint"><code><div>    mytuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+</div></code></pre>
+<h2 id="tuple">Tuple</h2>
+<p>Tuples are used to store multiple items in a single variable.</p>
+<p>Tuple is one of 4 built-in data types in Python used to store collections of data, the other 3 are List, Set, and Dictionary, all with different qualities and usage.</p>
+<p>A tuple is a collection which is ordered and <strong>unchangeable</strong>.</p>
+<p>Tuples are written with <strong>round brackets</strong>.</p>
+<pre class="prettyprint"><code><div>thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+print(thistuple)
+</div></code></pre>
+<blockquote>
+<p>('apple', 'banana', 'cherry')</p>
+</blockquote>
+<h2 id="tuple-items">Tuple Items</h2>
+<p>Tuple items are ordered, unchangeable, and allow duplicate values.</p>
+<p>Tuple items are indexed, the first item has index [0], the second item has index [1] etc.</p>
+<h3 id="ordered">Ordered</h3>
+<p>When we say that tuples are ordered, it means that the items have a defined order, and that order will not change.</p>
+<h3 id="unchangeable">Unchangeable</h3>
+<p>Tuples are unchangeable, meaning that we cannot change, add or remove items after the tuple has been created.</p>
+<h3 id="allow-duplicates">Allow Duplicates</h3>
+<p>Since tuples are indexed, they can have items with the same value:</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"apple"</span>, <span class="hljs-string">"cherry"</span>)
+
+    print(thistuple)
+</div></code></pre>
+<blockquote>
+<p>('apple', 'banana', 'cherry', 'apple', 'cherry')</p>
+</blockquote>
+<h2 id="tuple-length">Tuple Length</h2>
+<p>To determine how many items a tuple has, use the len() function:</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+
+    print(len(thistuple))
+</div></code></pre>
+<blockquote>
+<p>3</p>
+</blockquote>
+<h2 id="create-tuple-with-one-item">Create Tuple With One Item</h2>
+<p>To create a tuple with only one item, you have to add a comma after the item, otherwise Python will not recognize it as a tuple.</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>,)
+
+    print(type(thistuple))
+
+    <span class="hljs-comment">#NOT a tuple</span>
+    thistuple = (<span class="hljs-string">"apple"</span>)
+
+    print(type(thistuple))
+</div></code></pre>
+<blockquote>
+<p>&lt;class 'tuple'&gt;<br>
+&lt;class 'str'&gt;</p>
+</blockquote>
+<h2 id="tuple-items---data-types">Tuple Items - Data Types</h2>
+<p>Tuple items can be of any data type or mixed data types:</p>
+<pre class="prettyprint"><code><div>tuple1 = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+tuple2 = (<span class="hljs-number">1</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">9</span>, <span class="hljs-number">3</span>)
+tuple3 = (<span class="hljs-literal">True</span>, <span class="hljs-literal">False</span>, <span class="hljs-literal">False</span>)
+tuple4 = (<span class="hljs-string">"abc"</span>, <span class="hljs-number">34</span>, <span class="hljs-literal">True</span>, <span class="hljs-number">40</span>, <span class="hljs-string">"male"</span>)
+</div></code></pre>
+<h2 id="type">type()</h2>
+<p>From Python's perspective, tuples are defined as objects with the data type 'tuple':</p>
+<blockquote>
+<p>&lt;class 'tuple'&gt;</p>
+</blockquote>
+<pre class="prettyprint"><code><div>    mytuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+
+    print(type(mytuple))
+</div></code></pre>
+<blockquote>
+<p>&lt;class 'tuple'&gt;</p>
+</blockquote>
+<h2 id="the-tuple-constructor">The tuple() Constructor</h2>
+<p>It is also possible to use the <code>tuple()</code> constructor to make a tuple.</p>
+<pre class="prettyprint"><code><div>    thistuple = tuple((<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)) <span class="hljs-comment"># note the double round-brackets</span>
+    
+    print(thistuple)
+</div></code></pre>
+<blockquote>
+<p>('apple', 'banana', 'cherry')</p>
+</blockquote>
+<h2 id="python-collections-arrays">Python Collections (Arrays)</h2>
+<p>There are four collection data types in the Python programming language:</p>
+<ul>
+<li><strong>List</strong> is a collection which is ordered and changeable. Allows duplicate members.</li>
+<li><strong>Tuple</strong> is a collection which is ordered and unchangeable. Allows duplicate members.</li>
+<li><strong>Set</strong> is a collection which is unordered, unchangeable*, and unindexed. No duplicate members.</li>
+<li><strong>Dictionary</strong> is a collection which is ordered** and changeable. No duplicate members.</li>
+</ul>
+<h2 id="access-tuple-items">Access Tuple Items</h2>
+<p>You can access tuple items by referring to the index number, inside square brackets:</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+
+    print(thistuple[<span class="hljs-number">1</span>])
+</div></code></pre>
+<blockquote>
+<p>banana</p>
+</blockquote>
+<p><strong>Note:</strong> The first item has index 0.</p>
+<h3 id="negative-indexing">Negative Indexing</h3>
+<p>Negative indexing means start from the end.</p>
+<p>-1 refers to the last item, -2 refers to the second last item etc.</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+    print(thistuple[<span class="hljs-number">-1</span>])
+</div></code></pre>
+<h3 id="range-of-indexes">Range of Indexes</h3>
+<p>You can specify a range of indexes by specifying where to start and where to end the range.</p>
+<p>When specifying a range, the return value will be a new tuple with the specified items.</p>
+<p>Return the third, fourth, and fifth item:</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"orange"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"melon"</span>, <span class="hljs-string">"mango"</span>)
+
+    print(thistuple[<span class="hljs-number">2</span>:<span class="hljs-number">5</span>])
+</div></code></pre>
+<blockquote>
+<p>('cherry', 'orange', 'kiwi')</p>
+</blockquote>
+<p><strong>Note:</strong> The search will start at index 2 (included) and end at index 5 (not included).</p>
+<p>By leaving out the start value, the range will start at the first item:</p>
+<p>This example returns the items from the beginning to, but NOT included, &quot;kiwi&quot;:</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"orange"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"melon"</span>, <span class="hljs-string">"mango"</span>)
+
+    print(thistuple[:<span class="hljs-number">4</span>])
+</div></code></pre>
+<blockquote>
+<p>('apple', 'banana', 'cherry', 'orange')</p>
+</blockquote>
+<p>By leaving out the end value, the range will go on to the end of the list:</p>
+<p>This example returns the items from &quot;cherry&quot; and to the end:</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"orange"</span>, <span class="hljs-string">"kiwi"</span>, <span class="hljs-string">"melon"</span>, <span class="hljs-string">"mango"</span>)
+
+    print(thistuple[<span class="hljs-number">2</span>:])
+</div></code></pre>
+<blockquote>
+<p>('cherry', 'orange', 'kiwi', 'melon', 'mango')</p>
+</blockquote>
+<h2 id="check-if-item-exists">Check if Item Exists</h2>
+<p>To determine if a specified item is present in a tuple use the in keyword:</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+
+    <span class="hljs-keyword">if</span> <span class="hljs-string">"apple"</span> <span class="hljs-keyword">in</span> thistuple:
+        print(<span class="hljs-string">"Yes, 'apple' is in the fruits tuple"</span>)
+</div></code></pre>
+<blockquote>
+<p>Yes, 'apple' is in the fruits tuple</p>
+</blockquote>
+<h2 id="update-tuples">Update Tuples</h2>
+<p>Tuples are unchangeable, meaning that you cannot change, add, or remove items once the tuple is created.</p>
+<p>But there are some workarounds.</p>
+<h3 id="change-tuple-values">Change Tuple Values</h3>
+<p>Once a tuple is created, you cannot change its values. Tuples are unchangeable, or immutable as it also is called.</p>
+<p>But there is a workaround. You can convert the tuple into a list, change the list, and convert the list back into a tuple.</p>
+<p>Convert the tuple into a list to be able to change it:</p>
+<pre class="prettyprint"><code><div>    x = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+    y = list(x)
+
+    print(x)
+
+    y[<span class="hljs-number">1</span>] = <span class="hljs-string">"kiwi"</span>
+    
+    x = tuple(y)
+
+    print(x)
+</div></code></pre>
+<blockquote>
+<p>('apple', 'banana', 'cherry')<br>
+('apple', 'kiwi', 'cherry')</p>
+</blockquote>
+<h3 id="add-items">Add Items</h3>
+<p>Since tuples are immutable, they do not have a built-in <code>append()</code> method, but there are other ways to add items to a tuple.</p>
+<ol>
+<li><strong>Convert into a list:</strong> Just like the workaround for changing a tuple, you can convert it into a list, add your item(s), and convert it back into a tuple.</li>
+</ol>
+<p>Convert the tuple into a list, add &quot;orange&quot;, and convert it back into a tuple:</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+    y = list(thistuple)
+    y.append(<span class="hljs-string">"orange"</span>)
+    thistuple = tuple(y)
+    print(thistuple)
+</div></code></pre>
+<blockquote>
+<p>('apple', 'banana', 'cherry', 'orange')</p>
+</blockquote>
+<ol start="2">
+<li><strong>Add tuple to a tuple</strong>. You are allowed to add tuples to tuples, so if you want to add one item, (or many), create a new tuple with the item(s), and add it to the existing tuple:</li>
+</ol>
+<p>Create a new tuple with the value &quot;orange&quot;, and add that tuple:</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+    y = (<span class="hljs-string">"orange"</span>,)
+    thistuple += y
+
+    print(thistuple)
+</div></code></pre>
+<blockquote>
+<p>('apple', 'banana', 'cherry', 'orange')</p>
+</blockquote>
+<p><strong>Note:</strong> When creating a tuple with only one item, remember to include a comma after the item, otherwise it will not be identified as a tuple.</p>
+<p>Or you can delete the tuple completely:</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+    <span class="hljs-keyword">del</span> thistuple
+    
+    print(thistuple) <span class="hljs-comment">#this will raise an error because the tuple no longer exists</span>
+</div></code></pre>
+<h2 id="unpack-tuples">Unpack Tuples</h2>
+<h3 id="unpacking-a-tuple">Unpacking a Tuple</h3>
+<p>When we create a tuple, we normally assign values to it. This is called &quot;packing&quot; a tuple:</p>
+<p>Packing a tuple:</p>
+<pre class="prettyprint"><code><div>fruits = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+</div></code></pre>
+<p>But, in Python, we are also allowed to extract the values back into variables. This is called &quot;unpacking&quot;:</p>
+<pre class="prettyprint"><code><div>    fruits = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+
+    (green, yellow, red) = fruits
+
+    print(green)
+    print(yellow)
+    print(red)
+</div></code></pre>
+<blockquote>
+<p>apple<br>
+banana<br>
+cherry</p>
+</blockquote>
+<p><strong>Note:</strong> The number of variables must match the number of values in the tuple, if not, you must use an asterisk to collect the remaining values as a list.</p>
+<h3 id="using-asterisk">Using Asterisk*</h3>
+<p>If the number of variables is less than the number of values, you can add an <code>*</code> to the variable name and the values will be assigned to the variable as a list:</p>
+<p>Assign the rest of the values as a list called &quot;red&quot;:</p>
+<pre class="prettyprint"><code><div>    fruits = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>, <span class="hljs-string">"strawberry"</span>, <span class="hljs-string">"raspberry"</span>)
+
+    (green, yellow, *red) = fruits
+
+    print(green)
+    print(yellow)
+    print(red)
+</div></code></pre>
+<blockquote>
+<p>apple<br>
+banana<br>
+['cherry', 'strawberry', 'raspberry']</p>
+</blockquote>
+<p>If the asterisk is added to another variable name than the last, Python will assign values to the variable until the number of values left matches the number of variables left.</p>
+<p>Add a list of values the &quot;tropic&quot; variable:</p>
+<pre class="prettyprint"><code><div>    fruits = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"mango"</span>, <span class="hljs-string">"papaya"</span>, <span class="hljs-string">"pineapple"</span>, <span class="hljs-string">"cherry"</span>)
+
+    (green, *tropic, red) = fruits
+
+    print(green)
+    print(tropic)
+    print(red)
+</div></code></pre>
+<blockquote>
+<p>apple<br>
+['mango', 'papaya', 'pineapple']<br>
+cherry</p>
+</blockquote>
+<h2 id="creating-a-list-of-tuples">Creating a List of Tuples</h2>
+<p>This is an important code snippet. It shows you how to create a List of Tuples and is the basis for bringing back records from a database. By unpacking each Tuple we can create a printout of a query from a database.</p>
+<pre class="prettyprint"><code><div>    tuples = [
+        (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>),
+        (<span class="hljs-string">"orange"</span>, <span class="hljs-string">"mango"</span>, <span class="hljs-string">"lime"</span>),
+        (<span class="hljs-string">"Alan"</span>, <span class="hljs-string">"James"</span>, <span class="hljs-string">"Charley"</span>),
+    ]
+
+    <span class="hljs-keyword">for</span> tuple <span class="hljs-keyword">in</span> tuples:
+        (item1, item2, item3) = tuple
+
+        print(item1)
+        print(item2)
+        print(item3)
+        print()
+</div></code></pre>
+<blockquote>
+<p>apple<br>
+banana<br>
+cherry</p>
+<p>orange<br>
+mango<br>
+lime</p>
+<p>Alan<br>
+James<br>
+Charley</p>
+</blockquote>
+<p>This code is working with a list of tuples and unpacking the elements from each tuple to print them individually.</p>
+<h2 id="loop-through-a-tuple">Loop Through a Tuple</h2>
+<p>You can loop through the tuple items by using a for loop.</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+    
+    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> thistuple:
+      print(x)
+</div></code></pre>
+<blockquote>
+<p>apple<br>
+banana<br>
+cherry</p>
+</blockquote>
+<h3 id="loop-through-the-index-numbers">Loop Through the Index Numbers</h3>
+<p>You can also loop through the tuple items by referring to their index number.</p>
+<p>Use the <code>range()</code> and <code>len()</code> functions to create a suitable iterable.</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+    
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(thistuple)):
+        print(thistuple[i])
+</div></code></pre>
+<blockquote>
+<p>apple<br>
+banana<br>
+cherry</p>
+</blockquote>
+<h3 id="using-a-while-loop">Using a While Loop</h3>
+<p>You can loop through the tuple items by using a while loop.</p>
+<p>Use the <code>len()</code> function to determine the length of the tuple, then start at 0 and loop your way through the tuple items by referring to their indexes.</p>
+<p>Remember to increase the index by 1 after each iteration.</p>
+<pre class="prettyprint"><code><div>    thistuple = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+    i = <span class="hljs-number">0</span>
+    
+    <span class="hljs-keyword">while</span> i &lt; len(thistuple):
+      print(thistuple[i])
+      i += <span class="hljs-number">1</span>
+</div></code></pre>
+<blockquote>
+<p>apple<br>
+banana<br>
+cherry</p>
+</blockquote>
+<h2 id="join-tuples">Join Tuples</h2>
+<h3 id="join-two-tuples">Join Two Tuples</h3>
+<p>To join two or more tuples you can use the <code>+</code> operator:</p>
+<pre class="prettyprint"><code><div>    tuple1 = (<span class="hljs-string">"a"</span>, <span class="hljs-string">"b"</span> , <span class="hljs-string">"c"</span>)
+    tuple2 = (<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>)
+
+    tuple3 = tuple1 + tuple2
+    print(tuple3)
+</div></code></pre>
+<h3 id="multiply-tuples">Multiply Tuples</h3>
+<p>If you want to multiply the content of a tuple a given number of times, you can use the <code>*</code> operator:</p>
+<pre class="prettyprint"><code><div>    fruits = (<span class="hljs-string">"apple"</span>, <span class="hljs-string">"banana"</span>, <span class="hljs-string">"cherry"</span>)
+    mytuple = fruits * <span class="hljs-number">2</span>
+
+    print(mytuple)
+</div></code></pre>
+<h2 id="tuple-methods">Tuple Methods</h2>
+<p>Python has two built-in methods that you can use on tuples.</p>
+<p><strong>Method	| Description</strong><br>
+<strong>count()</strong>	| Returns the number of times a specified value occurs in a tuple<br>
+<strong>index()</strong>	| Searches the tuple for a specified value and returns the position of where it was found</p>
+
+
+
+</div><!-- starter-template -->
+</div><!-- /.container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"/>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+</body>
+</html>
