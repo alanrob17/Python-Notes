@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Python - MySql</title>
+<link href="assets/css/bootstrap.css" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="assets/css/starter-template.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+<style type="text/css">
+html {
+	font-size: 90.0%;
+}
+
+h2 {
+	margin-top: 60px;
+}
+
+h4, h3 {
+	padding-top: 40px!;		
+}
+
+p {
+	font-size: 1.2em;
+}
+h4 {
+	font-size: 1.4em;
+}
+
+img, pre.prettyprint {
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+    color:#007bff;
+
+}
+blockquote {
+    border-left: 4px solid #999;
+    padding-left: 1rem;
+    page-break-inside: avoid;
+}
+:target:before {
+  content: "";
+  display: block;
+  height: 80px; /* adjust this value to your needs */
+  margin: -80px 0 0; /* this should be a negative value of the height above */
+}
+</style>
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Connecting to MySql using Python</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Python - MySql <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <div class="starter-template">
+
+<h1 id="connecting-to-mysql-using-python">Connecting to MySql using Python</h1>
+<p>Install the MySQL connector.</p>
+<pre class="prettyprint"><code><div>    python -m pip install mysql-connector-python
+</div></code></pre>
+<h2 id="creating-a-database">Creating a database</h2>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> mysql.connector
+
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=<span class="hljs-string">"root"</span>, password=<span class="hljs-string">"london@1"</span>
+    )
+
+    cursor = db.cursor()
+
+    cursor.execute(<span class="hljs-string">"CREATE DATABASE RecordDB"</span>)
+</div></code></pre>
+<p>You can now change your database connection to be more specific.</p>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> mysql.connector
+
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=<span class="hljs-string">"root"</span>, password=<span class="hljs-string">"london@1"</span>, database=<span class="hljs-string">"RecordDB"</span>
+    )
+
+    print(db)
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>&lt;mysql.connector.connection_cext.CMySQLConnection object at 0x0000011BEFA4F090&gt;</p>
+</blockquote>
+<h2 id="creating-a-table">Creating a table</h2>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> mysql.connector
+
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=<span class="hljs-string">"root"</span>, password=<span class="hljs-string">"london@1"</span>, database=<span class="hljs-string">"RecordDB"</span>
+    )
+
+    cursor = db.cursor()
+
+    cursor.execute(
+        <span class="hljs-string">"CREATE TABLE Artist (ArtistId INT AUTO_INCREMENT PRIMARY KEY, FirstName VARCHAR(50), LastName VARCHAR(50), Name VARCHAR (100), Biography LONGTEXT)"</span>
+    )
+</div></code></pre>
+<p>Now, create a Record table that will be related to the Artist table we created previously on the <code>ArtistId</code> field.</p>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> mysql.connector
+
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=<span class="hljs-string">"root"</span>, password=<span class="hljs-string">"london@1"</span>, database=<span class="hljs-string">"RecordDB"</span>
+    )
+
+    cursor = db.cursor()
+
+    cursor.execute(
+        <span class="hljs-string">"CREATE TABLE Record (RecordId INT AUTO_INCREMENT PRIMARY KEY, ArtistId INT, \
+            Name VARCHAR(100), Field VARCHAR(50), Recorded INT, Label VARCHAR(50), \
+            Pressing VARCHAR(50), Rating VARCHAR(4), Discs INT, Media VARCHAR(50), \
+            Bought DATETIME, Cost DECIMAL(10,4), CoverName VARCHAR(50), \
+            Review LONGTEXT, FreeDbId INT)"</span>
+    )
+</div></code></pre>
+<p><strong>Note:</strong> we can use the <code>\</code> character to continue and save us from writing long lines of text.</p>
+<p>Now, check your database.</p>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> mysql.connector
+
+    <span class="hljs-comment"># connect to a database, if the database doesn't exist you will get an error.</span>
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=<span class="hljs-string">"root"</span>, password=<span class="hljs-string">"london@1"</span>, database=<span class="hljs-string">"RecordDB"</span>
+    )
+
+    cursor = db.cursor()
+
+    cursor.execute(<span class="hljs-string">"SHOW TABLES"</span>)
+
+    <span class="hljs-keyword">for</span> table <span class="hljs-keyword">in</span> cursor:
+        print(table)
+
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>('artist',)<br>
+('record',)</p>
+</blockquote>
+<h2 id="inserting-records-into-a-database">Inserting records into a database</h2>
+<p>Create the <strong>Artist</strong> table.</p>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> mysql.connector
+
+    db = mysql.connector.connect(
+    	host=<span class="hljs-string">"localhost"</span>, user=<span class="hljs-string">"root"</span>, password=<span class="hljs-string">"london@1"</span>, database=<span class="hljs-string">"RecordDB"</span>
+    )
+
+    cursor = db.cursor()
+
+    sql = <span class="hljs-string">"INSERT INTO Artist (ArtistId, FirstName, LastName, Name, Biography) VALUES (%s, %s, %s, %s, %s)"</span>
+
+    items = [
+    	(<span class="hljs-string">"528"</span>, <span class="hljs-string">"Mick"</span>, <span class="hljs-string">"Abrahams"</span>, <span class="hljs-string">"Mick Abrahams"</span>, <span class="hljs-string">"&lt;p&gt;Mick Abraham\'s ...&lt;/p&gt;"</span>),
+    	(<span class="hljs-string">"821"</span>, <span class="hljs-string">"Geoff"</span>, <span class="hljs-string">"Achison"</span>, <span class="hljs-string">"Geoff Achison"</span>, <span class="hljs-string">"&lt;p&gt;Australian-born...&lt;/p&gt;"</span>),
+    	(<span class="hljs-string">"1"</span>, <span class="hljs-string">"William"</span>, <span class="hljs-string">"Ackerman"</span>, <span class="hljs-string">"William Ackerman"</span>, <span class="hljs-string">"&lt;p&gt;Will Ackerman..."</span>),
+        ...
+    ]
+
+    cursor.executemany(sql, items)
+
+    db.commit()
+
+    print(<span class="hljs-string">f"<span class="hljs-subst">{cursor.rowcount}</span> were inserted."</span>)
+</div></code></pre>
+<p><strong>Note:</strong> the data has been abbreviated. Also note that the last record can have a comma on the end and this won't cause any problems in MySql.</p>
+<p>We can do the same for the <strong>Record</strong> table.</p>
+<pre class="prettyprint"><code><div><span class="hljs-keyword">import</span> mysql.connector
+
+db = mysql.connector.connect(
+	host=<span class="hljs-string">"localhost"</span>, user=<span class="hljs-string">"root"</span>, password=<span class="hljs-string">"london@1"</span>, database=<span class="hljs-string">"RecordDB"</span>
+)
+
+cursor = db.cursor()
+
+sql = <span class="hljs-string">"INSERT INTO Record (RecordId, ArtistId, Name, Field, Recorded, Label, Pressing, Rating, Discs, Media, Bought, Cost, Review) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"</span>
+
+items = [
+	(<span class="hljs-string">"1431"</span>,<span class="hljs-string">"528"</span>, <span class="hljs-string">"All Said And Done"</span>, <span class="hljs-string">"Rock"</span>, <span class="hljs-string">"1991"</span>, <span class="hljs-string">"Elite"</span>, <span class="hljs-string">"Eng"</span>, <span class="hljs-string">"*"</span>, <span class="hljs-string">"1"</span>, <span class="hljs-string">"CD"</span>, <span class="hljs-string">"2003-03-03 12:00:00"</span>, <span class="hljs-string">"0.0000"</span>, <span class="hljs-string">""</span>),
+	(<span class="hljs-string">"5236"</span>,<span class="hljs-string">"821"</span>, <span class="hljs-string">"Sovereign Town"</span>, <span class="hljs-string">"Rock"</span>, <span class="hljs-string">"2018"</span>, <span class="hljs-string">"Landslide Records"</span>, <span class="hljs-string">"Aus"</span>, <span class="hljs-string">"****"</span>, <span class="hljs-string">"1"</span>, <span class="hljs-string">"CD"</span>, <span class="hljs-string">"2019-06-06 12:00:00"</span>, <span class="hljs-string">"20.0000"</span>, <span class="hljs-string">"&lt;p&gt;With the list...&lt;p&gt;"</span>),
+	(<span class="hljs-string">"1"</span>,<span class="hljs-string">"1"</span>, <span class="hljs-string">"It Takes A Year"</span>, <span class="hljs-string">"Acoustic"</span>, <span class="hljs-string">"1977"</span>, <span class="hljs-string">"Windham Hill"</span>, <span class="hljs-string">"Am"</span>, <span class="hljs-string">"**"</span>, <span class="hljs-string">"1"</span>, <span class="hljs-string">"R"</span>, <span class="hljs-string">"1990-07-15 12:00:00"</span>, <span class="hljs-string">"1.0000"</span>, <span class="hljs-string">""</span>),
+    ...
+]
+
+cursor.executemany(sql, items)
+
+db.commit()
+
+print(<span class="hljs-string">f"<span class="hljs-subst">{cursor.rowcount}</span> were inserted."</span>)
+</div></code></pre>
+<p><strong>Important:</strong> all integers, decimals and datetime values are entered as strings. MySql will do the conversions provided that your data is in the correct format. Also note that the DateTime text is in the format, <code>2003-03-03 12:00:00</code>.</p>
+<h2 id="search-for-an-artist">Search for an Artist</h2>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> mysql.connector
+
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=<span class="hljs-string">"root"</span>, password=<span class="hljs-string">"london@1"</span>, database=<span class="hljs-string">"RecordDB"</span>
+    )
+
+    cursor = db.cursor()
+
+    artistname = <span class="hljs-string">"Bob Dylan"</span>
+
+    sql = <span class="hljs-string">f"SELECT ArtistId, Name, FirstName, LastName FROM Artist WHERE Name = '<span class="hljs-subst">{artistname}</span>';"</span>
+
+    cursor.execute(sql)
+
+    artist = cursor.fetchone()
+
+    <span class="hljs-keyword">if</span> artist:
+        artist_id, artist_name, first_name, last_name = artist  <span class="hljs-comment"># Unpack the row</span>
+        print(<span class="hljs-string">f"ArtistId: <span class="hljs-subst">{artist_id}</span>"</span>)
+        print(<span class="hljs-string">f"Artist name: <span class="hljs-subst">{artist_name}</span>"</span>)
+        print(<span class="hljs-string">f"First name: <span class="hljs-subst">{first_name}</span>"</span>)
+        print(<span class="hljs-string">f"Last name: <span class="hljs-subst">{last_name}</span>"</span>)
+    <span class="hljs-keyword">else</span>:
+        print(<span class="hljs-string">f"Artist '<span class="hljs-subst">{artistname}</span>' not found in the 'Artist' table."</span>)
+
+    cursor.close()
+    db.close()
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>ArtistId: 114<br>
+Artist name: Bob Dylan<br>
+First name: Bob<br>
+Last name: Dylan</p>
+</blockquote>
+<h2 id="create-a-list-of-all-artists">Create a list of all Artists</h2>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> mysql.connector
+
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=<span class="hljs-string">"root"</span>, password=<span class="hljs-string">"london@1"</span>, database=<span class="hljs-string">"RecordDB"</span>
+    )
+
+    cursor = db.cursor()
+
+    sql = <span class="hljs-string">"SELECT ArtistId, FirstName, LastName,Name FROM Artist;"</span>
+
+    cursor.execute(sql)
+
+    artists = cursor.fetchall()
+
+    <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists:
+        artist_id, first_name, last_name, artist_name = artist  <span class="hljs-comment"># Unpack the row</span>
+        print(<span class="hljs-string">f"Id: <span class="hljs-subst">{artist_id}</span>: <span class="hljs-subst">{artist_name}</span>"</span>)
+
+    cursor.close()
+    db.close()
+</div></code></pre>
+<p>Returns:</p>
+<blockquote>
+<p>Id: 1: William Ackerman<br>
+Id: 2: The Allman Brothers Band<br>
+Id: 3: Duane Allman<br>
+Id: 4: Greg Allman<br>
+Id: 5: Amazing Rhythm Aces<br>
+...</p>
+</blockquote>
+<h2 id="refactoring-my-code">Refactoring my code</h2>
+<p>I am going to start refactoring my code to stop repeating database routines.</p>
+<p>I will create the following files.</p>
+<h3 id="configurationpy">configuration.py</h3>
+<p>This file will have my connection details in it. This will minimise the number of times I have to repeat my connection strings. Now there will be only one place in my code that has usernames, passwords and the name of the database.</p>
+<pre class="prettyprint"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">connect</span><span class="hljs-params">()</span>:</span>
+    user = <span class="hljs-string">"username"</span>
+    password = <span class="hljs-string">"password"</span>
+    database = <span class="hljs-string">"RecordDB"</span>
+    <span class="hljs-keyword">return</span> user, password, database
+</div></code></pre>
+<p>This function creates an unnamed tuple. You can unpack the tuple to get the details.</p>
+<p>Now to connect to my database routines all I have to do is unpack the tuple.</p>
+<pre class="prettyprint"><code><div><span class="hljs-keyword">import</span> mysql.connector
+<span class="hljs-keyword">import</span> configuration <span class="hljs-keyword">as</span> c
+
+db_user, db_password, db_database = c.connect() <span class="hljs-comment"># unpack the tuple</span>
+</div></code></pre>
+<p>The next set of files I'll create will be database layers. These will hold my MySql database functions.</p>
+<h3 id="albumdbpy">album_db.py</h3>
+<p>These are a couple of my functions.</p>
+<pre class="prettyprint"><code><div><span class="hljs-keyword">import</span> mysql.connector
+<span class="hljs-keyword">import</span> configuration <span class="hljs-keyword">as</span> c
+
+
+db_user, db_password, db_database = c.connect()
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_all_artists</span><span class="hljs-params">()</span>:</span>
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=db_user, password=db_password, database=db_database
+    )
+
+    cursor = db.cursor()
+
+    sql = <span class="hljs-string">"SELECT ArtistId, FirstName, LastName, Name, Biography FROM Artist ORDER BY LastName, FirstName;"</span>
+
+    cursor.execute(sql)
+
+    artists = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    <span class="hljs-keyword">return</span> artists
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_artist</span><span class="hljs-params">(artist_name)</span>:</span>
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=db_user, password=db_password, database=db_database
+    )
+
+    cursor = db.cursor()
+
+    sql = <span class="hljs-string">f"SELECT ArtistId, Name, FirstName, LastName, Biography FROM Artist WHERE Name = '<span class="hljs-subst">{artist_name}</span>';"</span>
+
+    cursor.execute(sql)
+
+    artist = cursor.fetchone()
+
+    <span class="hljs-keyword">return</span> artist
+
+    cursor.close()
+    db.close()
+</div></code></pre>
+<p>For example, when you return <code>artists</code> in the first function they are returned a list of tuples, with each tuple representing one artist and containing the mentioned fields.</p>
+<p>To access these artist records you have to unpack them. E.g.</p>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists:
+        artist_id, first_name, last_name, name, biography = artist
+
+    ...
+</div></code></pre>
+<p><code>artist</code> in the second function is also a tuple and can be accessed by unpacking the tuple.</p>
+<pre class="prettyprint"><code><div>artist = a.get_artist(name)
+
+<span class="hljs-keyword">if</span> artist:
+    artist_id, artist_name, first_name, last_name, biography = artist  <span class="hljs-comment"># Unpack the row</span>
+
+...
+</div></code></pre>
+<h3 id="recorddbpy">record_db.py</h3>
+<p>Contains the record database calls.</p>
+<pre class="prettyprint"><code><div><span class="hljs-keyword">import</span> mysql.connector
+<span class="hljs-keyword">import</span> configuration <span class="hljs-keyword">as</span> c
+
+db_user, db_password, db_database = c.connect()
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_full_records</span><span class="hljs-params">()</span>:</span>
+    db = mysql.connector.connect(
+        host=<span class="hljs-string">"localhost"</span>, user=db_user, password=db_password, database=db_database
+    )
+
+    cursor = db.cursor()
+
+    sql = <span class="hljs-string">"SELECT RecordId, ArtistId, Name, Field, Recorded, Label, Pressing, \
+            Rating, Discs, Media, Bought, Cost, Review \
+            FROM Record ORDER BY ArtistId, Recorded DESC;"</span>
+
+    cursor.execute(sql)
+
+    records = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    <span class="hljs-keyword">return</span> records
+</div></code></pre>
+<p>Once again <code>records</code> are a list of tuples and can be accessed by unpacking them.</p>
+<p>I can simplify my main python code by shifting the data functions into the following files.</p>
+<h3 id="artistdatapy">artist_data.py</h3>
+<pre class="prettyprint"><code><div>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_artist_ids</span><span class="hljs-params">(records)</span>:</span>
+        <span class="hljs-comment"># Create a set to store distinct artist_ids</span>
+        artist_ids = set()
+
+        <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> records:
+            artist_id, name, recorded, media = record
+            artist_ids.add(artist_id)
+
+        <span class="hljs-comment"># Convert the set to a list if needed</span>
+        artist_ids_list = list(artist_ids)
+
+        <span class="hljs-keyword">return</span> artist_ids_list
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">organize_records_by_artist</span><span class="hljs-params">(records)</span>:</span>
+        artist_records = {}
+
+        <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> records:
+            artist_id, name, recorded, media = record
+
+            <span class="hljs-keyword">if</span> artist_id <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> artist_records:
+                artist_records[artist_id] = []
+
+            artist_records[artist_id].append((recorded, name, media))
+
+        <span class="hljs-keyword">return</span> artist_records
+</div></code></pre>
+<p>I can call and retrieve these records using the following code.</p>
+<pre class="prettyprint"><code><div>    artist_ids_list = ad.get_artist_ids(records)
+</div></code></pre>
+<p>This returns a list of <code>id's</code>.</p>
+<p><strong>Note:</strong> I could have left this list in a <strong>set</strong> and been able to retrieve the values just as easily. They were originally in a <strong>set</strong> because they were unique values.</p>
+<h3 id="recorddatapy">record_data.py</h3>
+<pre class="prettyprint"><code><div>    def filter_records_by_artist(records, artist_id):
+        filtered_records = [record for record in records if record[0] == artist_id]
+        sorted_records = sorted(filtered_records, key=lambda record: record[1])
+
+        return sorted_records
+</div></code></pre>
+<p>This function filters the <code>records</code> by artist_id to return a list of a particular artist's records. It also sorts the record names by alphabetical order. The function can be called with the following code.</p>
+<pre class="prettyprint"><code><div>    filtered_records = rd.filter_records_by_artist(records, artist_id)
+
+            <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> filtered_records:
+                artist_id, name, recorded, media = record
+
+                print(<span class="hljs-string">f"\t<span class="hljs-subst">{name}</span> (<span class="hljs-subst">{media}</span>)"</span>)
+</div></code></pre>
+<h2 id="create-a-list-of-all-artists-and-their-records">Create a list of all Artists and their Records</h2>
+<p>Uses the following modules.</p>
+<ul>
+<li>Configuration.py</li>
+<li>artist_db.py</li>
+<li>artist_data.py</li>
+<li>record_db.py</li>
+</ul>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> artist_db <span class="hljs-keyword">as</span> a
+    <span class="hljs-keyword">import</span> artist_data <span class="hljs-keyword">as</span> ad
+    <span class="hljs-keyword">import</span> record_db <span class="hljs-keyword">as</span> r
+
+    artists = a.get_all_artists()
+
+    records = r.get_records()
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_artist_records</span><span class="hljs-params">()</span>:</span>
+        artist_records = ad.organize_records_by_artist(records)
+
+        <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists:
+            artist_id, first_name, last_name, artist_name, biography = artist
+
+            <span class="hljs-keyword">if</span> artist_id <span class="hljs-keyword">in</span> artist_records:
+                print(<span class="hljs-string">f"\n<span class="hljs-subst">{artist_name}</span>\n"</span>)
+
+                <span class="hljs-keyword">for</span> recorded, name, media <span class="hljs-keyword">in</span> artist_records[artist_id]:
+                    print(<span class="hljs-string">f"\t<span class="hljs-subst">{recorded}</span> - <span class="hljs-subst">{name}</span> (<span class="hljs-subst">{media}</span>)"</span>)
+
+        print()
+
+
+    print_artist_records()
+</div></code></pre>
+<p>Returns:</p>
+<pre class="prettyprint"><code><div>    ...
+    Duane Allman
+
+            <span class="hljs-number">1972</span> - Anthology (R)
+
+    Greg Allman
+
+            <span class="hljs-number">2011</span> - Low Country Blues (CD)
+            <span class="hljs-number">1973</span> - Laid Back (R)
+
+    The Allman Brothers Band
+
+            <span class="hljs-number">1979</span> - Enlightened Rogues (R)
+            <span class="hljs-number">1973</span> - Brothers And Sisters (R)
+            <span class="hljs-number">1973</span> - Brothers And Sisters (CD)
+            ...
+</div></code></pre>
+<h3 id="print-all-albums-for-a-particular-year">Print all albums for a particular year</h3>
+<p>Uses the following modules.</p>
+<ul>
+<li>Configuration.py</li>
+<li>artist_db.py</li>
+<li>artist_data.py</li>
+<li>record_db.py</li>
+<li>record_data.py</li>
+</ul>
+<pre class="prettyprint"><code><div>    <span class="hljs-keyword">import</span> artist_db <span class="hljs-keyword">as</span> a
+    <span class="hljs-keyword">import</span> artist_data <span class="hljs-keyword">as</span> ad
+    <span class="hljs-keyword">import</span> record_db <span class="hljs-keyword">as</span> r
+    <span class="hljs-keyword">import</span> record_data <span class="hljs-keyword">as</span> rd
+
+    year = <span class="hljs-number">1975</span>
+
+    records = r.get_records_by_year(year)
+
+    <span class="hljs-keyword">if</span> len(records) == <span class="hljs-number">0</span>:
+        print(<span class="hljs-string">f"No records found for <span class="hljs-subst">{year}</span>."</span>)
+        exit()
+
+    artists = a.get_all_artists()
+
+    artist_ids_list = ad.get_artist_ids(records)
+
+    artists = [artist <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists <span class="hljs-keyword">if</span> artist[<span class="hljs-number">0</span>] <span class="hljs-keyword">in</span> artist_ids_list]
+
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">print_records</span><span class="hljs-params">(artists, records)</span>:</span>
+        print(<span class="hljs-string">f"\nAlbums recorded in <span class="hljs-subst">{year}</span>:"</span>)
+
+        <span class="hljs-keyword">for</span> artist <span class="hljs-keyword">in</span> artists:
+            artist_id, first_name, last_name, name, biography = artist
+
+            print(<span class="hljs-string">f"\n<span class="hljs-subst">{name}</span>\n"</span>)
+
+            filtered_records = rd.filter_records_by_artist(records, artist_id)
+
+            <span class="hljs-keyword">for</span> record <span class="hljs-keyword">in</span> filtered_records:
+                artist_id, name, recorded, media = record
+
+                print(<span class="hljs-string">f"\t<span class="hljs-subst">{name}</span> (<span class="hljs-subst">{media}</span>)"</span>)
+
+        print()
+
+
+    print_records(artists, records)
+</div></code></pre>
+<p>Returns:</p>
+<pre class="prettyprint"><code><div>    ...
+    Loggins And Messina
+
+            So Fine (R)
+
+    Ellen McIlwaine
+
+            The Real (R)
+
+    Joni Mitchell
+
+            The Hissing Of Summer Lawns (R)
+            The Hissing Of Summer Lawns (CD)
+    ...
+</div></code></pre>
+
+
+
+
+</div><!-- starter-template -->
+</div><!-- /.container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"/>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+</body>
+</html>
